@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "178974416087",
+    "project_id": "dormnow-46dee",
+    "storage_bucket": "dormnow-46dee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:178974416087:android:0ab0f6780e10219e8ae492",
+        "android_client_info": {
+          "package_name": "com.example.dormnow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "178974416087-t57vcj8t3ivglgrb3ajtrd6k6oo1aqou.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dormnow",
+            "certificate_hash": "346091fe511d177ff59e74628ab1135f1097b8b0"
+          }
+        },
+        {
+          "client_id": "178974416087-cm1gvbmpgn9bp8vlfmo9hor3d7rdeg7h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPVJPcBXVccNRSqp1odiFZyneULRzOAfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "178974416087-cm1gvbmpgn9bp8vlfmo9hor3d7rdeg7h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "178974416087-2kq8987j10po55eqgnujlo70i901bh68.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.dormnow"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
