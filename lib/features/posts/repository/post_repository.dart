@@ -14,9 +14,11 @@ final postRepositoryProvider = Provider((ref) {
 class PostRepository {
   final FirebaseFirestore _firestore;
 
-  PostRepository({required FirebaseFirestore firestore}) : _firestore = firestore;
+  PostRepository({required FirebaseFirestore firestore})
+      : _firestore = firestore;
 
-  CollectionReference get _posts => _firestore.collection(FirebaseConstants.postsCollection);
+  CollectionReference get _posts =>
+      _firestore.collection(FirebaseConstants.postsCollection);
 
   FutureVoid addPost(Post post) async {
     try {

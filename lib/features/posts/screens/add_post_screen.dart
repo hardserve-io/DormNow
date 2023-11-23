@@ -47,7 +47,9 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
   }
 
   void createPost() {
-    if (files.length <= 10 && titleController.text.isNotEmpty && priceController.text.isNotEmpty) {
+    if (files.length <= 10 &&
+        titleController.text.isNotEmpty &&
+        priceController.text.isNotEmpty) {
       ref.read(postContollerProvider.notifier).createPost(
             context: context,
             title: titleController.text.trim(),
