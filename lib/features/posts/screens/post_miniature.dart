@@ -30,12 +30,12 @@ class _OrderMiniature extends State<OrderMiniature> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
         side: BorderSide(
-          color: Color(0xff001535),
-          width: 2, //<-- SEE HERE
+          color: Color(0xFF16382B),
+          width: 0.01, //<-- SEE HERE
         ),
       ),
       shadowColor: Colors.black,
-      color: Color(0xff001535),
+      color: Color(0xFF16382B),
       elevation: 3.0,
       margin: EdgeInsets.only(bottom: 10),
       child: GestureDetector(
@@ -92,11 +92,11 @@ class _OrderMiniature extends State<OrderMiniature> {
                             : "Безкоштовно",
                         style: TextStyle(
                           fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.normal,
                           color: (widget.order.price != 0.0 &&
                                   widget.order.price != null)
                               ? Colors.white
-                              : Color(0xffFFC800),
+                              : Color(0xffFEF6EA),
                         ),
                         softWrap: false,
                         overflow: TextOverflow.fade,

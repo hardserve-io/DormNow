@@ -88,7 +88,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         Post(
           authorUid: "1",
           id: "1",
-          title: "Timur5",
+          title: "Timur",
           description: '',
           isFree: true,
           contacts: "@quw1",
@@ -119,25 +119,26 @@ class _BottomNavigatorState extends State<BottomNavigator> {
           ),
           child: Container(
             decoration: BoxDecoration(
-              border: const GradientBoxBorder(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.white,
-                    Colors.black,
-                    Colors.black,
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-                width: 1.2,
-              ),
+              color: Color(0xff121212),
+              // border: const GradientBoxBorder(
+              //   gradient: LinearGradient(
+              //     colors: [
+              //       Colors.white54,
+              //       Colors.white54,
+              //       //Colors.black,
+              //     ],
+              //     begin: Alignment.topCenter,
+              //     end: Alignment.bottomCenter,
+              //   ),
+              //   width: 1.2,
+              // ),
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15.r),
-                topRight: Radius.circular(15.r),
+                topLeft: Radius.circular(20.r),
+                topRight: Radius.circular(20.r),
               ),
             ),
             child: Padding(
-              padding: EdgeInsets.only(bottom: 20.h, top: 3.h),
+              padding: EdgeInsets.only(bottom: 0.h, top: 3.h),
               child: BottomNavigationBar(
                 elevation: 0,
                 //unselectedItemColor: Color.fromRGBO(126, 123, 123, 1),

@@ -20,7 +20,7 @@ class _OrderPageState extends State<OrderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blue.shade900,
+          backgroundColor: Color(0xff16382B),
           title: Text(widget.order.title),
         ),
         body: SingleChildScrollView(
@@ -36,7 +36,8 @@ class _OrderPageState extends State<OrderPage> {
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(widget.order.description ?? ''),
+                  child: Text(widget.order.description ?? '',
+                      style: TextStyle(fontSize: 20)),
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
@@ -45,11 +46,15 @@ class _OrderPageState extends State<OrderPage> {
                       text: "Контакти: ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
+                        fontSize: 20,
                       ),
                       children: [
                         TextSpan(
                           text: widget.order.contacts ?? '',
-                          style: TextStyle(fontWeight: FontWeight.normal),
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 20,
+                          ),
                         ),
                       ],
                     ),
@@ -57,7 +62,14 @@ class _OrderPageState extends State<OrderPage> {
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Гуртожиток: ${widget.order.address}" ?? ''),
+                  child: Text(
+                    (widget.order.address != null)
+                        ? "Адреса: ${widget.order.address}"
+                        : "Адреса відсутня",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
                 ),
               ],
             ),

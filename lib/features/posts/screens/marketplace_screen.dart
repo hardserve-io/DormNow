@@ -22,24 +22,24 @@ class _MarketplacePageState extends State<MarketplacePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade900,
+      backgroundColor: Color(0xff0a0a0a),
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: <Widget>[
           SliverAppBar(
             pinned: true,
             floating: false,
-            backgroundColor: const Color(0xff001535),
+            backgroundColor: Color(0xff121212),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                   width: 250.w,
                   alignment: Alignment.center,
-                  child: SvgPicture.asset(
+                  /*child: SvgPicture.asset(
                     './assets/images/barahoholka.svg',
                     alignment: Alignment.centerLeft,
-                  ),
+                  ),*/
                 ),
                 // Icon(Icons.search),
               ],
@@ -48,8 +48,32 @@ class _MarketplacePageState extends State<MarketplacePage> {
             flexibleSpace: FlexibleSpaceBar(
               background: SvgPicture.asset(
                 fit: BoxFit.cover,
-                './assets/images/noText.svg',
+                './assets/images/green_marketplace_banner.svg',
               ),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 20),
+                    width: 190.w,
+                    alignment: Alignment.bottomLeft,
+                    child: SvgPicture.asset(
+                      './assets/images/barahoholka.svg',
+                      alignment: Alignment.bottomLeft,
+                      width: 200.w,
+                      //alignment: Alignment.bottomLeft,
+                    ),
+                  ),
+                  Container(
+                    width: 40.w,
+                    child: SvgPicture.asset('./assets/images/lupa.svg'),
+                    alignment: Alignment.bottomLeft,
+                  ),
+                ],
+              ),
+              //centerTitle: true,
+              titlePadding: EdgeInsets.only(bottom: 20),
             ),
             //bottom:
           ),
