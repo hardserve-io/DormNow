@@ -36,40 +36,44 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         Post(
           authorUid: "1",
           id: "1",
-          title: "Timur1",
+          title: "Холодильник",
           description: '',
-          isFree: true,
+          isFree: false,
+          price: 1244,
           contacts: "@quw1",
           authorUsername: "Biba",
-          createdAt: DateTime(2023, 11, 20, 1, 1),
+          createdAt: DateTime(2023, 11, 20, 01, 12),
           pictures: [
-            "https://firebasestorage.googleapis.com/v0/b/dormnow-46dee.appspot.com/o/posts%2Fb7c43bb0-27b3-1d97-b3aa-c37b6dca40ab%2Fb8a43b70-27b3-1d97-b3aa-c37b6dca40ab?alt=media&token=a6790d32-bc28-4c74-ad1d-c8635698b365"
+            'https://ireland.apollo.olxcdn.com/v1/files/umdyoglkd29p3-UA/image;s=1500x2000'
           ],
         ),
         Post(
           authorUid: "1",
           id: "1",
-          title: "Timur2",
-          description: '',
+          title: 'Засіб від плісняви',
           isFree: true,
-          contacts: "@quw1",
+          contacts: "@viktoriina",
           authorUsername: "Biba",
           createdAt: DateTime(2023, 11, 20, 1, 1),
+          description:
+              'Перевірено, коли мив всередині холодильник - працює.\nЯ купляв за під 80 грн., віддам за 50 грн.\nБонусом віддам перчатки латексно-бавовняні, щоб ваші ручки були в безпеці \n\nРед.: він практично повний, я лише рази два пшикнув',
           pictures: [
-            "https://firebasestorage.googleapis.com/v0/b/dormnow-46dee.appspot.com/o/posts%2Fb7c43bb0-27b3-1d97-b3aa-c37b6dca40ab%2Fb8a43b70-27b3-1d97-b3aa-c37b6dca40ab?alt=media&token=a6790d32-bc28-4c74-ad1d-c8635698b365"
+            'https://ireland.apollo.olxcdn.com/v1/files/ozmtmwa5ckl43-UA/image;s=810x1080'
           ],
         ),
         Post(
           authorUid: "1",
           id: "1",
-          title: "Timur3",
-          description: '',
-          isFree: true,
+          title: "Wi-Fi роутер",
+          description:
+              'WiFi роутер Зухель 😎👍\nБлок живлення у подарунок ! 🎁\nХарактеристики:\n• 2.4GHz 😲\n• 3 (один згорів) порти 100 мб/с 🤯\n• Ровесник холодильника ДОНБАС 🤩\n• Країна виробник Китай (+99 social credit 🇨🇳)\n• Можна використовувати як пастку для тарганів 🦗🚫\nСтартова ціна 50 українських доларів UAH. 🤑 Крок 20 гривень \n\nP.S. Зібрані кошти підуть на підтримку бідних студентів 😢💸',
+          isFree: false,
+          price: 1488,
           contacts: "@quw1",
           authorUsername: "Biba",
           createdAt: DateTime(2023, 11, 20, 1, 1),
           pictures: [
-            "https://firebasestorage.googleapis.com/v0/b/dormnow-46dee.appspot.com/o/posts%2Fb7c43bb0-27b3-1d97-b3aa-c37b6dca40ab%2Fb8a43b70-27b3-1d97-b3aa-c37b6dca40ab?alt=media&token=a6790d32-bc28-4c74-ad1d-c8635698b365"
+            'https://cdn.thewirecutter.com/wp-content/media/2023/01/router-2048px-7075.jpg?auto=webp&quality=75&width=1024',
           ],
         ),
         Post(
@@ -88,14 +92,15 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         Post(
           authorUid: "1",
           id: "1",
-          title: "Timur",
+          title:
+              "⇒→⊃�⇒��=2⇒�2=4�2=4⇒�=2�+5=�+2⇔�+3=�¬(¬�)⇔�≠�⇔¬(�=�)∨+∥↮⊕⊻≢∀�∈�:�2≥�.∃�∈�:∃!!�∈�:��.≔≡:⇔:=≡:⇔:�=��+�−�(~)⊢⊨",
           description: '',
           isFree: true,
           contacts: "@quw1",
           authorUsername: "Biba",
           createdAt: DateTime(2023, 11, 20, 1, 1),
           pictures: [
-            "https://firebasestorage.googleapis.com/v0/b/dormnow-46dee.appspot.com/o/posts%2Fb7c43bb0-27b3-1d97-b3aa-c37b6dca40ab%2Fb8a43b70-27b3-1d97-b3aa-c37b6dca40ab?alt=media&token=a6790d32-bc28-4c74-ad1d-c8635698b365"
+            'https://api.mytimetable.live/media/img/teacher/shkilniak_ss.jpg'
           ],
         ),
       ],

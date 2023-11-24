@@ -26,19 +26,20 @@ class _OrderMiniature extends State<OrderMiniature> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-        side: BorderSide(
-          color: Color(0xFF16382B),
-          width: 0.01, //<-- SEE HERE
+    return GestureDetector(
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+          side: BorderSide(
+            color: Color(0xFF16382B),
+            width: 0.01, //<-- SEE HERE
+          ),
         ),
-      ),
-      shadowColor: Colors.black,
-      color: Color(0xFF16382B),
-      elevation: 3.0,
-      margin: EdgeInsets.only(bottom: 10),
-      child: GestureDetector(
+        shadowColor: Colors.black,
+        color: Color(0xFF16382B),
+        elevation: 3.0,
+        margin: EdgeInsets.only(bottom: 10),
+        // child: GestureDetector(
         child: Container(
           height: 150.h,
           width: 340.w,
@@ -128,21 +129,21 @@ class _OrderMiniature extends State<OrderMiniature> {
                             ),
                           ),
                           /*IconButton(
-                            padding: EdgeInsets.zero,
-                            constraints: BoxConstraints(),
-                            alignment: Alignment.topLeft,
-                            icon: widget.order.isFavourite!
-                                ? Icon(Icons.favorite)
-                                : Icon(Icons.favorite_outline),
-                            color: Color(0xffEF3E36),
-                            iconSize: 22,
-                            onPressed: () {
-                              setState(() {
-                                widget.order.favouriteChangeState();
-                                //print(widget.order.isFavourite);
-                              });
-                            },
-                          ),*/
+                              padding: EdgeInsets.zero,
+                              constraints: BoxConstraints(),
+                              alignment: Alignment.topLeft,
+                              icon: widget.order.isFavourite!
+                                  ? Icon(Icons.favorite)
+                                  : Icon(Icons.favorite_outline),
+                              color: Color(0xffEF3E36),
+                              iconSize: 22,
+                              onPressed: () {
+                                setState(() {
+                                  widget.order.favouriteChangeState();
+                                  //print(widget.order.isFavourite);
+                                });
+                              },
+                            ),*/
                           //Spacer(),
                         ],
                       ),
@@ -153,8 +154,10 @@ class _OrderMiniature extends State<OrderMiniature> {
             ),
           ),
         ),
-        onTap: () => expandOrder(),
+        //   onTap: () => expandOrder(),
+        // ),
       ),
+      onTap: () => expandOrder(),
     );
   }
 }
