@@ -1,5 +1,6 @@
 import 'package:dormnow/core/constants/fade_indexed_stack.dart';
 import 'package:dormnow/features/home/screens/home_screen.dart';
+import 'package:dormnow/features/posts/repository/post_repository.dart';
 import 'package:dormnow/features/posts/screens/marketplace_screen.dart';
 import 'package:dormnow/models/post_model.dart';
 import 'package:flutter/material.dart';

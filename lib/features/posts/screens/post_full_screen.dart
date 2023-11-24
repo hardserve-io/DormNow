@@ -69,12 +69,12 @@ class _OrderPageState extends State<OrderPage> {
                 children: [
                   Container(
                     height: 30.h,
-                    width: 150.w,
+                    width: 110.w,
                     padding: EdgeInsets.only(left: 5),
                     decoration: BoxDecoration(
                         border: Border.all(
-                      color: Color(0xff519872),
-                      width: 2,
+                      color: Color(0xffFFCE0C),
+                      width: 1,
                     )),
                     //margin: EdgeInsets.only(bottom: 10),
                     alignment: Alignment.centerLeft,
@@ -88,21 +88,21 @@ class _OrderPageState extends State<OrderPage> {
                   ),
                   Container(
                     height: 30.h,
-                    width: 192.w,
+                    width: 232.w,
                     padding: EdgeInsets.only(left: 5),
                     decoration: BoxDecoration(
                       border: Border(
                         right: BorderSide(
-                          color: Color(0xff519872),
-                          width: 2,
+                          color: Color(0xffFFCE0C),
+                          width: 1,
                         ),
                         top: BorderSide(
-                          color: Color(0xff519872),
-                          width: 2,
+                          color: Color(0xffFFCE0C),
+                          width: 1,
                         ),
                         bottom: BorderSide(
-                          color: Color(0xff519872),
-                          width: 2,
+                          color: Color(0xffFFCE0C),
+                          width: 1,
                         ),
                       ),
                     ),
@@ -114,7 +114,7 @@ class _OrderPageState extends State<OrderPage> {
                           : "Безкоштовно",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                        fontSize: 18,
                       ),
                     ),
                   ),
@@ -124,21 +124,21 @@ class _OrderPageState extends State<OrderPage> {
                 children: [
                   Container(
                     height: 30.h,
-                    width: 150.w,
+                    width: 110.w,
                     padding: EdgeInsets.only(left: 5),
                     decoration: BoxDecoration(
                       border: Border(
                         right: BorderSide(
-                          color: Color(0xff519872),
-                          width: 2,
+                          color: Color(0xffFFCE0C),
+                          width: 1,
                         ),
                         bottom: BorderSide(
-                          color: Color(0xff519872),
-                          width: 2,
+                          color: Color(0xffFFCE0C),
+                          width: 1,
                         ),
                         left: BorderSide(
-                          color: Color(0xff519872),
-                          width: 2,
+                          color: Color(0xffFFCE0C),
+                          width: 1,
                         ),
                       ),
                     ),
@@ -154,17 +154,17 @@ class _OrderPageState extends State<OrderPage> {
                   ),
                   Container(
                     height: 30.h,
-                    width: 192.w,
+                    width: 232.w,
                     padding: EdgeInsets.only(left: 5),
                     decoration: BoxDecoration(
                       border: Border(
                         right: BorderSide(
-                          color: Color(0xff519872),
-                          width: 2,
+                          color: Color(0xffFFCE0C),
+                          width: 1,
                         ),
                         bottom: BorderSide(
-                          color: Color(0xff519872),
-                          width: 2,
+                          color: Color(0xffFFCE0C),
+                          width: 1,
                         ),
                       ),
                     ),
@@ -174,7 +174,7 @@ class _OrderPageState extends State<OrderPage> {
                       widget.order.contacts,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                        fontSize: 18,
                       ),
                     ),
                   ),
@@ -184,21 +184,21 @@ class _OrderPageState extends State<OrderPage> {
                 children: [
                   Container(
                     height: 30.h,
-                    width: 150.w,
+                    width: 110.w,
                     padding: EdgeInsets.only(left: 5),
                     decoration: BoxDecoration(
                       border: Border(
                         right: BorderSide(
-                          color: Color(0xff519872),
-                          width: 2,
+                          color: Color(0xffFFCE0C),
+                          width: 1,
                         ),
                         bottom: BorderSide(
-                          color: Color(0xff519872),
-                          width: 2,
+                          color: Color(0xffFFCE0C),
+                          width: 1,
                         ),
                         left: BorderSide(
-                          color: Color(0xff519872),
-                          width: 2,
+                          color: Color(0xffFFCE0C),
+                          width: 1,
                         ),
                       ),
                     ),
@@ -214,17 +214,17 @@ class _OrderPageState extends State<OrderPage> {
                   ),
                   Container(
                     height: 30.h,
-                    width: 192.w,
+                    width: 232.w,
                     padding: EdgeInsets.only(left: 5),
                     decoration: BoxDecoration(
                       border: Border(
                         right: BorderSide(
-                          color: Color(0xff519872),
-                          width: 2,
+                          color: Color(0xffFFCE0C),
+                          width: 1,
                         ),
                         bottom: BorderSide(
-                          color: Color(0xff519872),
-                          width: 2,
+                          color: Color(0xffFFCE0C),
+                          width: 1,
                         ),
                       ),
                     ),
@@ -236,7 +236,7 @@ class _OrderPageState extends State<OrderPage> {
                           : "${widget.order.address}",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                        fontSize: 18,
                       ),
                     ),
                   ),
@@ -252,8 +252,8 @@ class _OrderPageState extends State<OrderPage> {
                       decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
-                            color: Color(0xff519872),
-                            width: 2,
+                            color: Color(0xffFFCE0C),
+                            width: 1,
                           ),
                         ),
                       ),
@@ -285,16 +285,16 @@ class _OrderPageState extends State<OrderPage> {
                 decoration: BoxDecoration(
                     border: Border(
                   right: BorderSide(
-                    color: Color(0xff519872),
-                    width: 2,
+                    color: Color(0xffFFCE0C),
+                    width: 1,
                   ),
                   bottom: BorderSide(
-                    color: Color(0xff519872),
-                    width: 2,
+                    color: Color(0xffFFCE0C),
+                    width: 1,
                   ),
                   left: BorderSide(
-                    color: Color(0xff519872),
-                    width: 2,
+                    color: Color(0xffFFCE0C),
+                    width: 1,
                   ),
                 )),
                 //alignment: Alignment.center,

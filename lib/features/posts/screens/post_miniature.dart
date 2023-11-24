@@ -2,6 +2,8 @@ import "package:dormnow/models/post_model.dart";
 import "package:flutter/material.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "post_full_screen.dart";
+import "package:dormnow/router.dart";
+import 'package:routemaster/routemaster.dart';
 
 class OrderMiniature extends StatefulWidget {
   const OrderMiniature({super.key, required this.order});
