@@ -14,11 +14,9 @@ final postRepositoryProvider = Provider((ref) {
 class PostRepository {
   final FirebaseFirestore _firestore;
 
-  PostRepository({required FirebaseFirestore firestore})
-      : _firestore = firestore;
+  PostRepository({required FirebaseFirestore firestore}) : _firestore = firestore;
 
-  CollectionReference get _posts =>
-      _firestore.collection(FirebaseConstants.postsCollection);
+  CollectionReference get _posts => _firestore.collection(FirebaseConstants.postsCollection);
 
   FutureVoid addPost(Post post) async {
     try {
@@ -28,5 +26,22 @@ class PostRepository {
     } catch (e) {
       return left(Failure(e.toString()));
     }
+  }
+
+  Stream<List<Post>> fetchPosts() {
+    return _posts
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((event) => event.docs.map((e) => Post.fromMap(e.data() as Map<String, dynamic>)).toList());
+  }
+
+  Future<QuerySnapshot<Object?>> getPosts({required int limit, DocumentSnapshot? startAfter}) async {
+    final Query<Object?> fetchedPosts;
+    if (startAfter != null) {
+      fetchedPosts = _posts.orderBy('createdAt', descending: true).limit(limit).startAfterDocument(startAfter);
+    } else {
+      fetchedPosts = _posts.orderBy('createdAt', descending: true).limit(limit);
+    }
+    return fetchedPosts.get();
   }
 }
