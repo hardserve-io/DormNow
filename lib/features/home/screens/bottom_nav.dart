@@ -3,6 +3,7 @@ import 'package:dormnow/features/home/screens/home_screen.dart';
 import 'package:dormnow/features/posts/repository/post_repository.dart';
 import 'package:dormnow/features/posts/screens/marketplace_screen.dart';
 import 'package:dormnow/models/post_model.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
@@ -16,19 +17,7 @@ class BottomNavigator extends StatefulWidget {
 
 class _BottomNavigatorState extends State<BottomNavigator> {
   int _selectedIndex = 0;
-  List<Post> posts = [
-    Post(
-      authorUid: "1",
-      id: "1",
-      title: "Timur",
-      description: '',
-      isFree: true,
-      contacts: "@quw1",
-      authorUsername: "Biba",
-      createdAt: DateTime(2023, 11, 20, 1, 1),
-      pictures: [],
-    ),
-  ];
+
 
   static List<Widget> _widgetOptions = <Widget>[
     //HomeScreen(),
@@ -125,26 +114,25 @@ class _BottomNavigatorState extends State<BottomNavigator> {
           ),
           child: Container(
             decoration: BoxDecoration(
-              color: Color(0xff121212),
-              // border: const GradientBoxBorder(
-              //   gradient: LinearGradient(
-              //     colors: [
-              //       Colors.white54,
-              //       Colors.white54,
-              //       //Colors.black,
-              //     ],
-              //     begin: Alignment.topCenter,
-              //     end: Alignment.bottomCenter,
-              //   ),
-              //   width: 1.2,
-              // ),
+              border: const GradientBoxBorder(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.white,
+                    Colors.black,
+                    Colors.black,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                width: 1.2,
+              ),
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.r),
-                topRight: Radius.circular(20.r),
+                topLeft: Radius.circular(15.r),
+                topRight: Radius.circular(15.r),
               ),
             ),
             child: Padding(
-              padding: EdgeInsets.only(bottom: 0.h, top: 3.h),
+              padding: EdgeInsets.only(bottom: 20.h, top: 3.h),
               child: BottomNavigationBar(
                 elevation: 0,
                 //unselectedItemColor: Color.fromRGBO(126, 123, 123, 1),

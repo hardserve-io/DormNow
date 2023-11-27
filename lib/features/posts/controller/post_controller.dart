@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dormnow/core/failure.dart';
 import 'package:dormnow/core/providers/storage_repository_provider.dart';
 import 'package:dormnow/core/utils.dart';
@@ -9,7 +10,6 @@ import 'package:dormnow/models/post_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:uuid/uuid.dart';
 
@@ -108,5 +108,12 @@ class PostContoller extends StateNotifier<bool> {
         print('Error: context not mounted @create_post() @PostController');
       }
     }
+  }
+
+  Future<(List<Post>, List<QueryDocumentSnapshot<Object?>>?)> getPosts(DocumentSnapshot? startAfter) async {
+    const docLimit = 2;
+    final snap = await _postRepository.getPosts(limit: docLimit, startAfter: startAfter);
+    final lastEL = snap.docs.length < docLimit ? null : snap.docs;
+    return (snap.docs.map((e) => Post.fromMap(e.data() as Map<String, dynamic>)).toList(), lastEL);
   }
 }

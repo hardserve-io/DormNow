@@ -100,7 +100,7 @@ class Post {
       authorUsername: map['authorUsername'] as String,
       authorUid: map['authorUid'] as String,
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
-      pictures: List<String>.from(map['pictures'] as List<String>),
+      pictures: List<String>.from(map['pictures']),
     );
   }
 

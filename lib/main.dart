@@ -17,8 +17,7 @@ import 'models/user_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -40,10 +39,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     final localModel = ref.read(userProvider.notifier);
     final localModelVal = localModel.state;
 
-    userModel = await ref
-        .watch(authControllerProvider.notifier)
-        .getUserData(data.uid)
-        .first;
+    userModel = await ref.watch(authControllerProvider.notifier).getUserData(data.uid).first;
 
     if (userModel != localModelVal) {
       localModel.update((state) => userModel);
