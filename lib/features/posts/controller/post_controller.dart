@@ -111,9 +111,9 @@ class PostContoller extends StateNotifier<bool> {
   }
 
   Future<(List<Post>, List<QueryDocumentSnapshot<Object?>>?)> getPosts(DocumentSnapshot? startAfter) async {
-    const docLimit = 2;
+    const docLimit = 5;
     final snap = await _postRepository.getPosts(limit: docLimit, startAfter: startAfter);
-    final lastEL = snap.docs.length < docLimit ? null : snap.docs;
+    final lastEL = snap.docs;
     return (snap.docs.map((e) => Post.fromMap(e.data() as Map<String, dynamic>)).toList(), lastEL);
   }
 }
