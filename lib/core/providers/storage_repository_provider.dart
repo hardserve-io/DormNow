@@ -27,7 +27,7 @@ class StorageRepository {
       print(file!.path);
       final ref = _firebaseStorage.ref().child(path).child(id);
 
-      UploadTask uploadTask = ref.putFile(file!);
+      UploadTask uploadTask = ref.putFile(file);
 
       final snapshot = await uploadTask;
       return right(await snapshot.ref.getDownloadURL());

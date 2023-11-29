@@ -2,6 +2,7 @@ import 'package:dormnow/core/constants/fade_indexed_stack.dart';
 import 'package:dormnow/features/home/screens/home_screen.dart';
 import 'package:dormnow/features/posts/repository/post_repository.dart';
 import 'package:dormnow/features/posts/screens/marketplace_screen.dart';
+import 'package:dormnow/features/user_profile/screens/user_profile_screen.dart';
 import 'package:dormnow/models/post_model.dart';
 
 import 'package:flutter/material.dart';
@@ -18,7 +19,6 @@ class BottomNavigator extends StatefulWidget {
 class _BottomNavigatorState extends State<BottomNavigator> {
   int _selectedIndex = 0;
 
-
   static List<Widget> _widgetOptions = <Widget>[
     //HomeScreen(),
     MarketplacePage(
@@ -33,9 +33,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
           contacts: "@quw1",
           authorUsername: "Biba",
           createdAt: DateTime(2023, 11, 20, 01, 12),
-          pictures: [
-            'https://ireland.apollo.olxcdn.com/v1/files/umdyoglkd29p3-UA/image;s=1500x2000'
-          ],
+          pictures: ['https://ireland.apollo.olxcdn.com/v1/files/umdyoglkd29p3-UA/image;s=1500x2000'],
         ),
         Post(
           authorUid: "1",
@@ -47,9 +45,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
           createdAt: DateTime(2023, 11, 20, 1, 1),
           description:
               'Перевірено, коли мив всередині холодильник - працює.\nЯ купляв за під 80 грн., віддам за 50 грн.\nБонусом віддам перчатки латексно-бавовняні, щоб ваші ручки були в безпеці \n\nРед.: він практично повний, я лише рази два пшикнув',
-          pictures: [
-            'https://ireland.apollo.olxcdn.com/v1/files/ozmtmwa5ckl43-UA/image;s=810x1080'
-          ],
+          pictures: ['https://ireland.apollo.olxcdn.com/v1/files/ozmtmwa5ckl43-UA/image;s=810x1080'],
         ),
         Post(
           authorUid: "1",
@@ -89,14 +85,12 @@ class _BottomNavigatorState extends State<BottomNavigator> {
           contacts: "@quw1",
           authorUsername: "Biba",
           createdAt: DateTime(2023, 11, 20, 1, 1),
-          pictures: [
-            'https://api.mytimetable.live/media/img/teacher/shkilniak_ss.jpg'
-          ],
+          pictures: ['https://api.mytimetable.live/media/img/teacher/shkilniak_ss.jpg'],
         ),
       ],
     ),
     HomeScreen(),
-    HomeScreen(),
+    UserProfileScreen(uid: null)
   ];
 
   @override

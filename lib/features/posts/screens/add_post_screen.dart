@@ -48,13 +48,15 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
   }
 
   void createPost() {
-    if (files.length <= 10 && titleController.text.isNotEmpty && priceController.text.isNotEmpty) {
+    if (files.length <= 10 &&
+        titleController.text.isNotEmpty &&
+        (priceController.text.isNotEmpty || isPriced == "Free")) {
       ref.read(postContollerProvider.notifier).createPost(
             context: context,
             title: titleController.text.trim(),
             description: descController.text.trim(),
             files: files,
-            price: double.parse(priceController.text.trim()),
+            price: isPriced == "Price" ? double.parse(priceController.text.trim()) : null,
             isFree: isPriced == "Free",
             contacts: "contacts",
             address: "address",

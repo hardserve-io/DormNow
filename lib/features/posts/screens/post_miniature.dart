@@ -1,3 +1,4 @@
+import "package:dormnow/core/constants/constants.dart";
 import "package:dormnow/models/post_model.dart";
 import "package:flutter/material.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
@@ -16,14 +17,7 @@ class OrderMiniature extends StatefulWidget {
 
 class _OrderMiniature extends State<OrderMiniature> {
   void expandOrder() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => OrderPage(
-          order: widget.order,
-        ),
-      ),
-    );
+    Routemaster.of(context).push('/post/${widget.order.id}');
   }
 
   @override
@@ -58,9 +52,7 @@ class _OrderMiniature extends State<OrderMiniature> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.network(
-                      (widget.order.pictures.isEmpty)
-                          ? img
-                          : widget.order.pictures[0],
+                      (widget.order.pictures.isEmpty) ? Constants.postThumbnailDefault : widget.order.pictures[0],
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -89,15 +81,13 @@ class _OrderMiniature extends State<OrderMiniature> {
                     Container(
                       alignment: Alignment.topRight,
                       child: Text(
-                        (widget.order.price != 0.0 &&
-                                widget.order.price != null)
+                        (widget.order.price != 0.0 && widget.order.price != null)
                             ? "${widget.order.price}₴"
                             : "Безкоштовно",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
-                          color: (widget.order.price != 0.0 &&
-                                  widget.order.price != null)
+                          color: (widget.order.price != 0.0 && widget.order.price != null)
                               ? Colors.white
                               : Color(0xffFEF6EA),
                         ),
@@ -118,9 +108,7 @@ class _OrderMiniature extends State<OrderMiniature> {
                             //height: 17.h,
                             //margin: EdgeInsets.only(top: 0),
                             child: Text(
-                              (widget.order.address != null)
-                                  ? "Адреса: ${widget.order.address}"
-                                  : "Адреса відсутня",
+                              (widget.order.address != null) ? "Адреса: ${widget.order.address}" : "Адреса відсутня",
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
                                 color: Colors.white70,
