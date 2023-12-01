@@ -2,26 +2,45 @@ import "package:dormnow/core/constants/constants.dart";
 import "package:dormnow/models/post_model.dart";
 import "package:flutter/material.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
+import 'package:dormnow/core/common/error_text.dart';
+import 'package:dormnow/core/common/loader.dart';
+import 'package:dormnow/core/constants/constants.dart';
+import 'package:dormnow/features/auth/controller/auth_controller.dart';
+import 'package:dormnow/features/posts/controller/post_controller.dart';
+import 'package:dormnow/features/user_profile/controller/user_profile_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import "post_full_screen.dart";
 import "package:dormnow/router.dart";
 import 'package:routemaster/routemaster.dart';
+import 'package:flutter_riverpod/src/consumer.dart';
 
-class OrderMiniature extends StatefulWidget {
+class OrderMiniature extends ConsumerStatefulWidget {
   const OrderMiniature({super.key, required this.order});
 
   final Post order;
 
   @override
-  State<OrderMiniature> createState() => _OrderMiniature();
+  ConsumerState<ConsumerStatefulWidget> createState() => _OrderMiniature();
 }
 
-class _OrderMiniature extends State<OrderMiniature> {
+class _OrderMiniature extends ConsumerState<OrderMiniature> {
   void expandOrder() {
     Routemaster.of(context).push('/post/${widget.order.id}');
   }
 
+  void toggleFavorites() {
+    ref
+        .read(userProfileControllerProvider.notifier)
+        .addOrRemoveFromFavorites(context, widget.order.id);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(userProvider);
+    bool liked = user!.likedMarketAdverts.contains(widget.order.id);
     return GestureDetector(
       child: Card(
         shape: RoundedRectangleBorder(
@@ -52,7 +71,9 @@ class _OrderMiniature extends State<OrderMiniature> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.network(
-                      (widget.order.pictures.isEmpty) ? Constants.postThumbnailDefault : widget.order.pictures[0],
+                      (widget.order.pictures.isEmpty)
+                          ? Constants.postThumbnailDefault
+                          : widget.order.pictures[0],
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -81,13 +102,15 @@ class _OrderMiniature extends State<OrderMiniature> {
                     Container(
                       alignment: Alignment.topRight,
                       child: Text(
-                        (widget.order.price != 0.0 && widget.order.price != null)
+                        (widget.order.price != 0.0 &&
+                                widget.order.price != null)
                             ? "${widget.order.price}₴"
                             : "Безкоштовно",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
-                          color: (widget.order.price != 0.0 && widget.order.price != null)
+                          color: (widget.order.price != 0.0 &&
+                                  widget.order.price != null)
                               ? Colors.white
                               : Color(0xffFEF6EA),
                         ),
@@ -108,7 +131,9 @@ class _OrderMiniature extends State<OrderMiniature> {
                             //height: 17.h,
                             //margin: EdgeInsets.only(top: 0),
                             child: Text(
-                              (widget.order.address != null) ? "Адреса: ${widget.order.address}" : "Адреса відсутня",
+                              (widget.order.address != null)
+                                  ? "Адреса: ${widget.order.address}"
+                                  : "Адреса відсутня",
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
                                 color: Colors.white70,
@@ -118,22 +143,20 @@ class _OrderMiniature extends State<OrderMiniature> {
                               maxLines: 1,
                             ),
                           ),
-                          /*IconButton(
-                              padding: EdgeInsets.zero,
-                              constraints: BoxConstraints(),
-                              alignment: Alignment.topLeft,
-                              icon: widget.order.isFavourite!
-                                  ? Icon(Icons.favorite)
-                                  : Icon(Icons.favorite_outline),
-                              color: Color(0xffEF3E36),
-                              iconSize: 22,
-                              onPressed: () {
-                                setState(() {
-                                  widget.order.favouriteChangeState();
-                                  //print(widget.order.isFavourite);
-                                });
-                              },
-                            ),*/
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                            constraints: BoxConstraints(),
+                            alignment: Alignment.topLeft,
+                            icon: liked
+                                ? Icon(Icons.favorite)
+                                : Icon(Icons.favorite_outline),
+                            color: Color(0xffFFCE0C),
+                            iconSize: 22,
+                            onPressed: () {
+                              toggleFavorites();
+                              setState(() {});
+                            },
+                          ),
                           //Spacer(),
                         ],
                       ),
@@ -144,8 +167,6 @@ class _OrderMiniature extends State<OrderMiniature> {
             ),
           ),
         ),
-        //   onTap: () => expandOrder(),
-        // ),
       ),
       onTap: () => expandOrder(),
     );

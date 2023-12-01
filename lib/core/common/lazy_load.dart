@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LazyLoadWidget extends ConsumerStatefulWidget {
-  final Future<(List<Post>, List<QueryDocumentSnapshot<Object?>>?)> Function(QueryDocumentSnapshot<Object?>?) loadFrom;
+  final Future<(List<Post>, List<QueryDocumentSnapshot<Object?>>?)> Function(
+      QueryDocumentSnapshot<Object?>?) loadFrom;
   const LazyLoadWidget({super.key, required this.loadFrom});
 
   @override
@@ -33,6 +34,9 @@ class _LazyLoadWidgetState extends ConsumerState<LazyLoadWidget> {
     if (newDocs.isNotEmpty) {
       lastEl = lastElement!.last;
       listDocument.addAll(newDocs);
+      moreToLoad = true;
+    } else {
+      moreToLoad = false;
     }
 
     setState(() {
@@ -58,7 +62,8 @@ class _LazyLoadWidgetState extends ConsumerState<LazyLoadWidget> {
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
         if (notification is ScrollEndNotification) {
-          if (notification.metrics.pixels == notification.metrics.maxScrollExtent) {
+          if (notification.metrics.pixels ==
+              notification.metrics.maxScrollExtent) {
             loadPosts();
           }
         }
@@ -78,9 +83,9 @@ class _LazyLoadWidgetState extends ConsumerState<LazyLoadWidget> {
                 final key = UniqueKey();
                 return OrderMiniature(order: post, key: key);
               } else {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 32),
-                  child: Loader(),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 32),
+                  child: moreToLoad ? const Loader() : Container(),
                 );
               }
             },

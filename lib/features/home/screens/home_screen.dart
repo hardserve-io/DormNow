@@ -41,14 +41,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xffFFCE0C),
         onPressed: () => navigateToCreatePost(context),
         heroTag: null,
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+        ),
       ),
       body: NestedScrollView(
         physics: BouncingScrollPhysics(),
         headerSliverBuilder: (_, __) => [
           SliverAppBar(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+            ),
             pinned: true,
             floating: false,
             title: Row(
@@ -69,7 +78,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             flexibleSpace: FlexibleSpaceBar(
               background: SvgPicture.asset(
                 fit: BoxFit.cover,
-                'assets/images/green_marketplace_banner.svg',
+                'assets/images/services_banner.svg',
               ),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,16 +87,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   Container(
                     padding: EdgeInsets.only(left: 20),
                     width: 190.w,
+                    height: 12.h,
                     alignment: Alignment.bottomLeft,
                     child: SvgPicture.asset(
-                      'assets/images/barahoholka.svg',
+                      'assets/images/services_text.svg',
                       alignment: Alignment.bottomLeft,
-                      width: 200.w,
+                      width: 100.w,
                       //alignment: Alignment.bottomLeft,
                     ),
                   ),
                   Container(
                     width: 40.w,
+                    height: 20.h,
                     child: SvgPicture.asset('assets/images/lupa.svg'),
                     alignment: Alignment.bottomLeft,
                   ),
@@ -99,39 +110,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             //bottom:
           ),
         ],
-        body: NotificationListener<ScrollNotification>(
-          onNotification: (notification) {
-            if (notification is ScrollEndNotification) {
-              if (notification.metrics.pixels ==
-                  notification.metrics.maxScrollExtent) {
-                loadPosts();
-              }
-            }
-            return true;
-          },
-          child: RefreshIndicator(
-            onRefresh: refresh,
-            child: Padding(
-              padding: EdgeInsets.only(left: 25, right: 25),
-              child: ListView.builder(
-                physics: BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: listDocument.length + 1,
-                itemBuilder: (context, index) {
-                  if (index < listDocument.length) {
-                    final Post post = listDocument[index];
-                    final key = UniqueKey();
-                    return OrderMiniature(order: post, key: key);
-                  } else {
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 32),
-                      child: Loader(),
-                    );
-                  }
-                },
-              ),
-            ),
-          ),
+        body: LazyLoadWidget(
+          loadFrom: ref.watch(postContollerProvider.notifier).getPosts,
         ),
       ),
     );
