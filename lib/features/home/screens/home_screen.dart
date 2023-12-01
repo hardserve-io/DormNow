@@ -50,7 +50,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         isLoadingList = true;
       });
     }
-    final (newDocs, lastElement) = await ref.read(postContollerProvider.notifier).getPosts(lastEl);
+    final (newDocs, lastElement) =
+        await ref.read(postContollerProvider.notifier).getPosts(lastEl);
 
     if (newDocs.isNotEmpty) {
       lastEl = lastElement!.last;
@@ -134,7 +135,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         body: NotificationListener<ScrollNotification>(
           onNotification: (notification) {
             if (notification is ScrollEndNotification) {
-              if (notification.metrics.pixels == notification.metrics.maxScrollExtent) {
+              if (notification.metrics.pixels ==
+                  notification.metrics.maxScrollExtent) {
                 loadPosts();
               }
             }
@@ -142,6 +144,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           },
           child: RefreshIndicator(
             onRefresh: refresh,
+            color: Color(0xff519872),
             child: Padding(
               padding: EdgeInsets.only(left: 25, right: 25),
               child: ListView.builder(
