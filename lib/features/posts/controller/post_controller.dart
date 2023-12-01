@@ -23,6 +23,11 @@ final postContollerProvider = StateNotifierProvider<PostContoller, bool>((ref) {
   );
 });
 
+final getPostByIdProvider = StreamProvider.autoDispose.family((ref, String postId) {
+  final postConctoller = ref.watch(postContollerProvider.notifier);
+  return postConctoller.getPostById(postId);
+});
+
 class PostContoller extends StateNotifier<bool> {
   final PostRepository _postRepository;
   final Ref _ref;
@@ -115,5 +120,9 @@ class PostContoller extends StateNotifier<bool> {
     final snap = await _postRepository.getPosts(limit: docLimit, startAfter: startAfter);
     final lastEL = snap.docs;
     return (snap.docs.map((e) => Post.fromMap(e.data() as Map<String, dynamic>)).toList(), lastEL);
+  }
+
+  Stream<Post> getPostById(String postId) {
+    return _postRepository.getPostById(postId);
   }
 }

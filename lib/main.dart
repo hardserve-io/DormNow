@@ -1,12 +1,12 @@
 import 'package:dormnow/core/common/error_text.dart';
 import 'package:dormnow/core/common/loader.dart';
 import 'package:dormnow/features/auth/controller/auth_controller.dart';
-import 'package:dormnow/features/auth/screens/login_screen.dart';
 import 'package:dormnow/firebase_options.dart';
 import 'package:dormnow/router.dart';
 import 'package:dormnow/theme/pallete.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -53,6 +53,7 @@ class _MyAppState extends ConsumerState<MyApp> {
           data: (data) => ScreenUtilInit(
             designSize: const Size(390, 844),
             builder: (context, child) => MaterialApp.router(
+              scrollBehavior: const CupertinoScrollBehavior(),
               title: 'DormNow',
               theme: Pallete.darkModeAppTheme,
               debugShowCheckedModeBanner: false,

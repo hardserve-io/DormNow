@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dormnow/core/common/lazy_load.dart';
 import 'package:dormnow/core/common/lazy_load_scrollview.dart';
 import 'package:dormnow/core/common/loader.dart';
 import 'package:dormnow/features/auth/controller/auth_controller.dart';
@@ -19,17 +20,11 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  bool isLoadingList = false;
-  bool moreToLoad = true;
-  List<Post> listDocument = [];
-  QueryDocumentSnapshot<Object?>? lastEl;
   final scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    print(2);
-    loadPosts();
   }
 
   @override
@@ -40,34 +35,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   void navigateToCreatePost(BuildContext context) {
     Routemaster.of(context).push('/add-post');
-  }
-
-  void loadPosts([bool refresh = false]) async {
-    print(1);
-
-    if (!refresh) {
-      setState(() {
-        isLoadingList = true;
-      });
-    }
-    final (newDocs, lastElement) =
-        await ref.read(postContollerProvider.notifier).getPosts(lastEl);
-
-    if (newDocs.isNotEmpty) {
-      lastEl = lastElement!.last;
-      listDocument.addAll(newDocs);
-    }
-
-    setState(() {
-      isLoadingList = false;
-    });
-  }
-
-  Future<void> refresh() {
-    listDocument = [];
-    lastEl = null;
-    loadPosts(true);
-    return Future(() => null);
   }
 
   @override
@@ -144,7 +111,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           },
           child: RefreshIndicator(
             onRefresh: refresh,
-            color: Color(0xff519872),
             child: Padding(
               padding: EdgeInsets.only(left: 25, right: 25),
               child: ListView.builder(
@@ -169,29 +135,5 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ),
     );
-
-    //     Container(
-    //         child: Column(
-    //       children: [
-    //         Expanded(
-    //           child: LazyLoadScrollView(
-    //               isLoading: isLoadingList,
-    //               onEndOfPage: loadPosts,
-    //               child: ListView.builder(
-    //                 physics: AlwaysScrollableScrollPhysics(),
-    //                 shrinkWrap: true,
-    //                 itemCount: listDocument.length,
-    //                 itemBuilder: (context, index) {
-    //                   final Post post = listDocument[index];
-    //                   return SizedBox(
-    //                     height: 200,
-    //                     child: Text(post.title),
-    //                   );
-    //                 },
-    //               )),
-    //         )
-    //       ],
-    //     )),
-    //   );
   }
 }
