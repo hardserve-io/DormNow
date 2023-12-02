@@ -145,7 +145,8 @@ class _OrderMiniature extends ConsumerState<OrderMiniature> {
                           ),
                           IconButton(
                             padding: EdgeInsets.zero,
-                            constraints: BoxConstraints(),
+                            constraints:
+                                BoxConstraints(minWidth: 10, minHeight: 10),
                             alignment: Alignment.topLeft,
                             icon: liked
                                 ? Icon(Icons.favorite)
