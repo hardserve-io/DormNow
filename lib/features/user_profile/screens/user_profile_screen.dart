@@ -20,7 +20,7 @@ class UserProfileScreen extends ConsumerStatefulWidget {
   ConsumerState<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
-class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
+class _UserProfileScreenState extends ConsumerState<UserProfileScreen>{
   late String uid;
   void navigateToEditUser(BuildContext context) {
     Routemaster.of(context).push('/edit-profile');
@@ -175,11 +175,11 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                           Row(
                             children: [
                               Container(
-                                height: 100.h,
-                                width: 100.w,
-                                margin: EdgeInsets.only(top: 20, right: 10),
+                                height: 80.h,
+                                width: 80.w,
+                                margin: EdgeInsets.only(top: 20),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
+                                  borderRadius: BorderRadius.circular(80),
                                   child: Image.network(
                                     user.profilePicture,
                                     fit: BoxFit.cover,
@@ -211,7 +211,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Container(
-                                          //margin: EdgeInsets.only(top: 15),
+                                          margin: EdgeInsets.only(right: 5),
                                           decoration: BoxDecoration(
                                             border: Border.all(
                                               width: 1,
@@ -258,28 +258,16 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                               ),
                             ],
                           ),
-                          Container(
-                            margin: EdgeInsets.only(top: 20),
-                            width: 340.w,
-                            height: 50.h,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color: Color(0xffFFCE0C),
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                            ),
-                            //color: Colors.amber,
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Уподобані оголошення:",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
+                          DefaultTabController(
+                            length: 2,
+                            child: TabBar(
+                              onTap: (selectedTabIndex) {},
+                              indicatorColor: Color(0xffFFCE0C),
+                              tabs: [
+                                Tab(text: "Власні"),
+                                Tab(text: "Уподобані"),
+                              ],
+                            )
                           ),
                           ListView.builder(
                             physics: const BouncingScrollPhysics(),
