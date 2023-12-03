@@ -196,11 +196,36 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>{
                                   children: [
                                     Container(
                                       alignment: Alignment.bottomLeft,
+                                      padding: EdgeInsets.only(bottom: 10),
                                       child: Text(
                                         "${user.name}",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        maxLines: 2,
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.bottomLeft,
+                                      padding: EdgeInsets.only(bottom: 1),
+                                      child: Text(
+                                        "Адреса: ",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        maxLines: 2,
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.bottomLeft,
+                                      padding: EdgeInsets.only(bottom: 5),
+                                      child: Text(
+                                        "Контакти: ",
+                                        style: TextStyle(
+                                          fontSize: 14,
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         maxLines: 2,
@@ -258,16 +283,19 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>{
                               ),
                             ],
                           ),
-                          DefaultTabController(
-                            length: 2,
-                            child: TabBar(
-                              onTap: (selectedTabIndex) {},
-                              indicatorColor: Color(0xffFFCE0C),
-                              tabs: [
-                                Tab(text: "Власні"),
-                                Tab(text: "Уподобані"),
-                              ],
-                            )
+                          Container(
+                            padding: EdgeInsets.only(top: 40),
+                            child: DefaultTabController(
+                              length: 2,
+                              child: TabBar(
+                                onTap: (selectedTabIndex) {},
+                                indicatorColor: Color(0xffFFCE0C),
+                                tabs: [
+                                  Tab(text: "Власні"),
+                                  Tab(text: "Уподобані"),
+                                ],
+                              )
+                            ),
                           ),
                           ListView.builder(
                             physics: const BouncingScrollPhysics(),
