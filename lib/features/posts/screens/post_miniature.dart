@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import "package:dormnow/core/constants/constants.dart";
 import "package:dormnow/models/post_model.dart";
 import "package:flutter/material.dart";
@@ -70,11 +71,12 @@ class _OrderMiniature extends ConsumerState<OrderMiniature> {
                   margin: EdgeInsets.all(12),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      (widget.order.pictures.isEmpty)
+                    child: CachedNetworkImage(
+                      imageUrl: (widget.order.pictures.isEmpty)
                           ? Constants.postThumbnailDefault
                           : widget.order.pictures[0],
                       fit: BoxFit.cover,
+                      placeholder: (context, url) => Loader(),
                     ),
                   ),
                 ),
@@ -145,7 +147,8 @@ class _OrderMiniature extends ConsumerState<OrderMiniature> {
                           ),
                           IconButton(
                             padding: EdgeInsets.zero,
-                            constraints: BoxConstraints(),
+                            constraints:
+                                BoxConstraints(minWidth: 10, minHeight: 10),
                             alignment: Alignment.topLeft,
                             icon: liked
                                 ? Icon(Icons.favorite)

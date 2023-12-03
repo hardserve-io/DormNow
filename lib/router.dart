@@ -1,6 +1,7 @@
 import 'package:dormnow/features/auth/screens/login_screen.dart';
 import 'package:dormnow/features/home/screens/bottom_nav.dart';
 import 'package:dormnow/features/posts/screens/add_post_screen.dart';
+import 'package:dormnow/features/posts/screens/gallery_screen.dart';
 import 'package:dormnow/features/user_profile/screens/edit_profile_screen.dart';
 import 'package:dormnow/features/user_profile/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
