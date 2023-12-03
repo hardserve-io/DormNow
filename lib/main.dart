@@ -57,15 +57,17 @@ class _MyAppState extends ConsumerState<MyApp> {
               title: 'DormNow',
               theme: Pallete.darkModeAppTheme,
               debugShowCheckedModeBanner: false,
-              routerDelegate: RoutemasterDelegate(routesBuilder: (context) {
-                if (data != null) {
-                  getData(ref, data);
-                  if (userModel != null) {
-                    return loggedInRoute;
+              routerDelegate: RoutemasterDelegate(
+                routesBuilder: (context) {
+                  if (data != null) {
+                    getData(ref, data);
+                    if (userModel != null) {
+                      return loggedInRoute;
+                    }
                   }
-                }
-                return loggedOutRoute;
-              }),
+                  return loggedOutRoute;
+                },
+              ),
               routeInformationParser: const RoutemasterParser(),
             ),
           ),

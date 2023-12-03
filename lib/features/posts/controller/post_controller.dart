@@ -125,4 +125,9 @@ class PostContoller extends StateNotifier<bool> {
   Stream<Post> getPostById(String postId) {
     return _postRepository.getPostById(postId);
   }
+
+  void deletePost(Post post) async {
+    final res = await _postRepository.deletePost(post);
+    res.fold((l) => null, (r) => null);
+  }
 }

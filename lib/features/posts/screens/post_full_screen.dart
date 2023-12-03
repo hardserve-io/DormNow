@@ -7,6 +7,7 @@ import 'package:dormnow/features/user_profile/controller/user_profile_controller
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:routemaster/routemaster.dart';
 
 class OrderPage extends ConsumerStatefulWidget {
   const OrderPage({super.key, required this.postId});
@@ -22,6 +23,10 @@ class _OrderPageState extends ConsumerState<OrderPage> {
     ref.read(userProfileControllerProvider.notifier).addOrRemoveFromFavorites(context, widget.postId);
   }
 
+  void navigateToCreatePost(BuildContext context) {
+    Routemaster.of(context).push('/post/${widget.postId}/edit-post');
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider);
@@ -29,6 +34,9 @@ class _OrderPageState extends ConsumerState<OrderPage> {
 
     return ref.watch(getPostByIdProvider(widget.postId)).when(
         data: (data) => Scaffold(
+              floatingActionButton: FloatingActionButton(
+                onPressed: () => navigateToCreatePost(context),
+              ),
               appBar: AppBar(
                 backgroundColor: const Color(0xff16382B),
                 title: Text(
