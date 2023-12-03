@@ -29,7 +29,7 @@ class LoginScreen extends ConsumerWidget {
           : Column(
               children: [
                 Center(
-                  child: const SignInButton(),
+                  child: const SignInButton()
                 ),
               ],
             ),

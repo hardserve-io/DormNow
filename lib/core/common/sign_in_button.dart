@@ -13,7 +13,7 @@ class SignInButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ElevatedButton(
       onPressed: () => signInWithGoogle(context, ref),
-      child: const Text('Sign in with Google'),
+      child: const Text('Вхід через Google'),
     );
   }
 }
