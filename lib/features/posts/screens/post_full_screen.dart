@@ -9,6 +9,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:dormnow/features/posts/screens/gallery_screen.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class OrderPage extends ConsumerStatefulWidget {
   const OrderPage({super.key, required this.postId});
@@ -78,6 +80,20 @@ class _OrderPageState extends ConsumerState<OrderPage> {
     );
   }
 
+  Widget buildImage(String ImageUrl, int index) => CachedNetworkImage(
+        imageUrl: ImageUrl,
+        imageBuilder: (context, ImageProvider) => Container(
+          height: 400.h,
+          width: 362.w,
+          margin: EdgeInsets.symmetric(horizontal: 10),
+          child: Ink.image(
+            image: ImageProvider,
+            fit: BoxFit.cover,
+          ),
+        ),
+        placeholder: (context, url) => Loader(),
+      );
+
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider);
@@ -98,27 +114,48 @@ class _OrderPageState extends ConsumerState<OrderPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    InkWell(
-                      child: Ink.image(
-                        image: NetworkImage(
-                          (data.pictures.isEmpty)
-                              ? Constants.postThumbnailDefault
-                              : data.pictures[0],
-                        ),
-                        height: 400.h,
-                        fit: BoxFit.fitWidth,
-                      ),
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => GalleryWidget(
-                            urlImages: (data.pictures.isEmpty)
-                                ? [Constants.postThumbnailDefault]
-                                : data.pictures,
-                            title: data.title,
+                    (data.pictures.isEmpty)
+                        ? CachedNetworkImage(
+                            imageUrl: Constants.postThumbnailDefault,
+                            imageBuilder: (context, imageProvider) => Container(
+                              child: Image(image: imageProvider),
+                            ),
+                            placeholder: (context, url) => Loader(),
+                          )
+                        : InkWell(
+                            child: (data.pictures.length == 1)
+                                ? CachedNetworkImage(
+                                    imageUrl: data.pictures[0],
+                                    imageBuilder: (context, imageProvider) =>
+                                        Ink.image(
+                                      image: imageProvider,
+                                      height: 400.h,
+                                      fit: BoxFit.fitWidth,
+                                    ),
+                                    placeholder: (context, url) => Loader(),
+                                  )
+                                : CarouselSlider.builder(
+                                    itemCount: (data.pictures.isEmpty)
+                                        ? 1
+                                        : data.pictures.length,
+                                    itemBuilder: (context, index, realIndex) {
+                                      return buildImage(
+                                          data.pictures[index], index);
+                                    },
+                                    options: CarouselOptions(
+                                      height: 400.h,
+                                      viewportFraction: 0.99,
+                                    ),
+                                  ),
+                            onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => GalleryWidget(
+                                  urlImages: data.pictures,
+                                  title: data.title,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
                     Container(
                       margin: const EdgeInsets.only(
                         top: 10,
