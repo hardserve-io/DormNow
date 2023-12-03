@@ -11,9 +11,28 @@ class SignInButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ElevatedButton(
-      onPressed: () => signInWithGoogle(context, ref),
-      child: const Text('Вхід через Google'),
+    return Container(
+      margin: EdgeInsets.only(top: 200),
+      width: 200,
+      height: 80,
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: 1,
+          color: Color(0xffFFCE0C),
+        ),
+        borderRadius: BorderRadius.all(
+            Radius.circular(40)),
+      ),
+      child: TextButton(
+        onPressed: () => signInWithGoogle(context, ref),
+        child: Text(
+          'Вхід через Google',
+          style: TextStyle(
+              fontSize: 20,
+              color: Color(0xffFFCE0C),
+            )
+          ),
+      )
     );
   }
 }

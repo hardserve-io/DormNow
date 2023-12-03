@@ -61,7 +61,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final user = ref.watch(userProvider)!;
     return ref.watch(getUserDataProvider(user.uid)).when(
           data: (data) => Scaffold(
-            appBar: AppBar(title: const Text('Редагування профілю')),
+            appBar: AppBar(
+              title: const Text('Редагування профілю'),
+              backgroundColor: const Color(0xff16382B)
+            ),
             body: Center(
               child: Column(
                 children: [
