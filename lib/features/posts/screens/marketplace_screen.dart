@@ -17,8 +17,7 @@ class MarketPlaceScreen extends ConsumerStatefulWidget {
   const MarketPlaceScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _MarketPlaceScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _MarketPlaceScreenState();
 }
 
 class _MarketPlaceScreenState extends ConsumerState<MarketPlaceScreen> {
@@ -41,6 +40,9 @@ class _MarketPlaceScreenState extends ConsumerState<MarketPlaceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loading = ref.watch(refreshNotifier);
+    print('!!');
+    print(loading);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xffFFCE0C),

@@ -3,6 +3,7 @@ import 'package:dormnow/core/constants/firebase_constants.dart';
 import 'package:dormnow/core/failure.dart';
 import 'package:dormnow/core/providers/firebase_providers.dart';
 import 'package:dormnow/core/type_defs.dart';
+import 'package:dormnow/features/user_profile/controller/user_profile_controller.dart';
 import 'package:dormnow/models/post_model.dart';
 import 'package:dormnow/models/user_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -58,14 +59,19 @@ class UserProfileRepository {
   //   return res.docs.map((e) => Post.fromMap(e.data() as Map<String, dynamic>)).toList();
   // }
 
-  Future<Post> getFavPost({required String postIds}) async {
+  FutureEither<Post> getFavPost({required String postIds}) async {
     final fetchedPosts = _posts.where("id", isEqualTo: postIds);
 
     final res = await fetchedPosts.get();
-    return res.docs.map((e) => Post.fromMap(e.data() as Map<String, dynamic>)).toList().first;
+
+    final resDone = res.docs.map((e) => Post.fromMap(e.data() as Map<String, dynamic>)).toList();
+    if (resDone.isEmpty) {
+      return left(Failure(postIds));
+    }
+    return right(resDone.first);
   }
 
-  Future<List<Post>> getFavPosts({
+  Future<List<Either<Failure, Post>>> getFavPosts({
     required List<String> postIds,
   }) async {
     var posts = await Future.wait(postIds.asMap().entries.map((postId) => getFavPost(postIds: postId.value)));

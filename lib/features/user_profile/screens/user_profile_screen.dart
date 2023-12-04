@@ -20,7 +20,7 @@ class UserProfileScreen extends ConsumerStatefulWidget {
   ConsumerState<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
-class _UserProfileScreenState extends ConsumerState<UserProfileScreen>{
+class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   late String uid;
   void navigateToEditUser(BuildContext context) {
     Routemaster.of(context).push('/edit-profile');
@@ -49,9 +49,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>{
         });
       }
 
-      final newDocs = await ref
-          .read(userProfileControllerProvider.notifier)
-          .getPosts(startPost, endPost);
+      final newDocs = await ref.read(userProfileControllerProvider.notifier).getPosts(startPost, endPost);
 
       startPost = endPost;
       endPost += step;
@@ -158,8 +156,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>{
               body: NotificationListener<ScrollNotification>(
                 onNotification: (notification) {
                   if (notification is ScrollEndNotification) {
-                    if (notification.metrics.pixels ==
-                        notification.metrics.maxScrollExtent) {
+                    if (notification.metrics.pixels == notification.metrics.maxScrollExtent) {
                       loadPosts();
                     }
                   }
@@ -172,130 +169,130 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>{
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          Row(
-                            children: [
-                              Container(
-                                height: 80.h,
-                                width: 80.w,
-                                margin: EdgeInsets.only(top: 20),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(80),
-                                  child: Image.network(
-                                    user.profilePicture,
-                                    fit: BoxFit.cover,
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  height: 80.h,
+                                  width: 80.w,
+                                  margin: EdgeInsets.only(top: 20, right: 10),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(80),
+                                    child: Image.network(
+                                      user.profilePicture,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(top: 20),
-                                height: 100.h,
-                                width: 232.w,
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.bottomLeft,
-                                      padding: EdgeInsets.only(bottom: 10),
-                                      child: Text(
-                                        "${user.name}",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        maxLines: 2,
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.bottomLeft,
-                                      padding: EdgeInsets.only(bottom: 1),
-                                      child: Text(
-                                        "Адреса: ",
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        maxLines: 2,
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.bottomLeft,
-                                      padding: EdgeInsets.only(bottom: 5),
-                                      child: Text(
-                                        "Контакти: ",
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        maxLines: 2,
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.only(right: 5),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              width: 1,
-                                              color: Color(0xffFFCE0C),
-                                            ),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
+                                Container(
+                                  margin: EdgeInsets.only(top: 20),
+                                  height: 150.h,
+                                  width: 245.w,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.bottomLeft,
+                                        margin: EdgeInsets.only(bottom: 5),
+                                        child: Text(
+                                          "${user.name}",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
-                                          child: TextButton(
-                                            onPressed: () =>
-                                                navigateToEditUser(context),
-                                            child: const Text(
-                                              'Редагувати профіль',
-                                              style: TextStyle(
-                                                color: Color(0xffFFCE0C),
+                                          maxLines: 2,
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.bottomLeft,
+                                        margin: EdgeInsets.only(bottom: 5),
+                                        child: Text(
+                                          "Адреса: ${user.dfAddress}",
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          maxLines: 2,
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.bottomLeft,
+                                        margin: EdgeInsets.only(bottom: 10),
+                                        child: Text(
+                                          "Контакти: ${user.dfContact}",
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          maxLines: 2,
+                                        ),
+                                      ),
+                                      Container(
+                                        //margin: EdgeInsets.only(top: 40),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.only(right: 5),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  width: 1,
+                                                  color: Color(0xffFFCE0C),
+                                                ),
+                                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                                              ),
+                                              child: TextButton(
+                                                onPressed: () => navigateToEditUser(context),
+                                                child: const Text(
+                                                  'Редагувати профіль',
+                                                  style: TextStyle(
+                                                    color: Color(0xffFFCE0C),
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ),
-                                        Container(
-                                          //margin: EdgeInsets.only(top: 15),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              width: 1,
-                                              color: Color(0xffFFCE0C),
-                                            ),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
-                                          ),
-                                          child: TextButton(
-                                            onPressed: () => logout(ref),
-                                            child: const Text(
-                                              'Вийти',
-                                              style: TextStyle(
-                                                color: Color(0xffFFCE0C),
+                                            Container(
+                                              //margin: EdgeInsets.only(top: 15),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  width: 1,
+                                                  color: Color(0xffFFCE0C),
+                                                ),
+                                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                                              ),
+                                              child: TextButton(
+                                                onPressed: () => logout(ref),
+                                                child: const Text(
+                                                  'Вийти',
+                                                  style: TextStyle(
+                                                    color: Color(0xffFFCE0C),
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                          ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           Container(
-                            padding: EdgeInsets.only(top: 40),
+                            margin: EdgeInsets.only(top: 30),
                             child: DefaultTabController(
-                              length: 2,
-                              child: TabBar(
-                                onTap: (selectedTabIndex) {},
-                                indicatorColor: Color(0xffFFCE0C),
-                                tabs: [
-                                  Tab(text: "Власні"),
-                                  Tab(text: "Уподобані"),
-                                ],
-                              )
-                            ),
+                                length: 2,
+                                child: TabBar(
+                                  onTap: (selectedTabIndex) {},
+                                  indicatorColor: Color(0xffFFCE0C),
+                                  tabs: [
+                                    Tab(text: "Власні"),
+                                    Tab(text: "Уподобані"),
+                                  ],
+                                )),
                           ),
                           ListView.builder(
                             physics: const BouncingScrollPhysics(),
@@ -305,13 +302,15 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>{
                               if (index < listDocument.length) {
                                 final Post post = listDocument[index];
                                 final key = UniqueKey();
-                                return OrderMiniature(order: post, key: key);
+                                return OrderMiniature(
+                                  order: post,
+                                  key: key,
+                                  refreshParent: refresh,
+                                );
                               } else {
                                 return Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 32),
-                                  child:
-                                      moreToLoad ? const Loader() : Container(),
+                                  padding: const EdgeInsets.symmetric(vertical: 32),
+                                  child: moreToLoad ? const Loader() : Container(),
                                 );
                               }
                             },

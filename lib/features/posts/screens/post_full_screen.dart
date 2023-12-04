@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:dormnow/features/posts/screens/gallery_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:routemaster/routemaster.dart';
 
 class OrderPage extends ConsumerStatefulWidget {
   const OrderPage({super.key, required this.postId});
@@ -23,9 +24,15 @@ class OrderPage extends ConsumerStatefulWidget {
 
 class _OrderPageState extends ConsumerState<OrderPage> {
   void toggleFavorites() {
-    ref
-        .read(userProfileControllerProvider.notifier)
-        .addOrRemoveFromFavorites(context, widget.postId);
+    ref.read(userProfileControllerProvider.notifier).addOrRemoveFromFavorites(context, widget.postId);
+  }
+
+  void navigateToEditPost(BuildContext context) {
+    Routemaster.of(context).push('/post/${widget.postId}/edit');
+  }
+
+  void deletePost(BuildContext context) {
+    ref.read(postContollerProvider.notifier).deletePost(widget.postId, context);
   }
 
   Future<void> _showAlertDialog(String text) async {
@@ -100,335 +107,321 @@ class _OrderPageState extends ConsumerState<OrderPage> {
     bool liked = user!.likedMarketAdverts.contains(widget.postId);
 
     return ref.watch(getPostByIdProvider(widget.postId)).when(
-        data: (data) => Scaffold(
-              appBar: AppBar(
-                backgroundColor: const Color(0xff16382B),
-                title: Text(
-                  data.title,
-                  overflow: TextOverflow.ellipsis,
-                ),
+        data: (data) {
+          print('postFill');
+          print(data);
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: const Color(0xff16382B),
+              title: Text(
+                data.title,
+                overflow: TextOverflow.ellipsis,
               ),
-              body: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.all(25),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    (data.pictures.isEmpty)
-                        ? CachedNetworkImage(
-                            imageUrl: Constants.postThumbnailDefault,
-                            imageBuilder: (context, imageProvider) => Container(
-                              child: Image(image: imageProvider),
-                            ),
-                            placeholder: (context, url) => Loader(),
-                          )
-                        : InkWell(
-                            child: (data.pictures.length == 1)
-                                ? CachedNetworkImage(
-                                    imageUrl: data.pictures[0],
-                                    imageBuilder: (context, imageProvider) =>
-                                        Ink.image(
-                                      image: imageProvider,
-                                      height: 400.h,
-                                      fit: BoxFit.fitWidth,
-                                    ),
-                                    placeholder: (context, url) => Loader(),
-                                  )
-                                : CarouselSlider.builder(
-                                    itemCount: (data.pictures.isEmpty)
-                                        ? 1
-                                        : data.pictures.length,
-                                    itemBuilder: (context, index, realIndex) {
-                                      return buildImage(
-                                          data.pictures[index], index);
-                                    },
-                                    options: CarouselOptions(
-                                      height: 400.h,
-                                      viewportFraction: 0.99,
-                                    ),
+            ),
+            body: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.all(25),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  (data.pictures.isEmpty)
+                      ? CachedNetworkImage(
+                          imageUrl: Constants.postThumbnailDefault,
+                          imageBuilder: (context, imageProvider) => Container(
+                            child: Image(image: imageProvider),
+                          ),
+                          placeholder: (context, url) => Loader(),
+                        )
+                      : InkWell(
+                          child: (data.pictures.length == 1)
+                              ? CachedNetworkImage(
+                                  imageUrl: data.pictures[0],
+                                  imageBuilder: (context, imageProvider) => Ink.image(
+                                    image: imageProvider,
+                                    height: 400.h,
+                                    fit: BoxFit.fitWidth,
                                   ),
-                            onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => GalleryWidget(
-                                  urlImages: data.pictures,
-                                  title: data.title,
+                                  placeholder: (context, url) => Loader(),
+                                )
+                              : CarouselSlider.builder(
+                                  itemCount: (data.pictures.isEmpty) ? 1 : data.pictures.length,
+                                  itemBuilder: (context, index, realIndex) {
+                                    return buildImage(data.pictures[index], index);
+                                  },
+                                  options: CarouselOptions(
+                                    height: 400.h,
+                                    viewportFraction: 0.99,
+                                  ),
                                 ),
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => GalleryWidget(
+                                urlImages: data.pictures,
+                                title: data.title,
                               ),
                             ),
                           ),
-                    Container(
-                      margin: const EdgeInsets.only(
-                        top: 10,
-                        //bottom: 10,
-                      ),
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        data.title,
-                        style: const TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
                         ),
+                  Container(
+                    margin: const EdgeInsets.only(
+                      top: 10,
+                      //bottom: 10,
+                    ),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      data.title,
+                      style: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Row(
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: 280.w,
+                        // height: 36.h,
+                        margin: const EdgeInsets.only(bottom: 10),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          (data.authorUsername != "")
+                              ? "Додав користувач: ${data.authorUsername}"
+                              : "Анонімне оголошення",
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.white54,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          maxLines: 2,
+                        ),
+                      ),
+                      IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(minWidth: 10, minHeight: 10),
+                        alignment: Alignment.topLeft,
+                        icon: liked ? const Icon(Icons.favorite) : const Icon(Icons.favorite_border_outlined),
+                        color: const Color(0xffFFCE0C),
+                        iconSize: 36,
+                        onPressed: () {
+                          toggleFavorites();
+                          setState(() {});
+                        },
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(
+                      bottom: 10,
+                    ),
+                    child: Text(
+                      (data.address != null) ? "Адреса: ${data.address}" : "Адреса відсутня",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white54,
+                        fontSize: 18,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                  Container(
+                    width: 362,
+                    height: 70,
+                    decoration: const BoxDecoration(
+                      color: Color(0xff16382B),
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    //color: Colors.amber,
+                    margin: EdgeInsets.only(bottom: 20),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          width: 280.w,
-                          // height: 36.h,
-                          margin: const EdgeInsets.only(bottom: 10),
-                          alignment: Alignment.centerLeft,
+                          margin: EdgeInsets.only(left: 15),
                           child: Text(
-                            (data.authorUsername != "")
-                                ? "Додав користувач: ${data.authorUsername}"
-                                : "Анонімне оголошення",
+                            (data.isFree == false) ? data.price.toString() : "Безкоштовно",
                             style: const TextStyle(
-                              fontSize: 18,
-                              color: Colors.white54,
-                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 28,
                             ),
-                            maxLines: 2,
                           ),
                         ),
-                        IconButton(
-                          padding: EdgeInsets.zero,
-                          constraints:
-                              const BoxConstraints(minWidth: 10, minHeight: 10),
-                          alignment: Alignment.topLeft,
-                          icon: liked
-                              ? const Icon(Icons.favorite)
-                              : const Icon(Icons.favorite_border_outlined),
-                          color: const Color(0xffFFCE0C),
-                          iconSize: 36,
-                          onPressed: () {
-                            toggleFavorites();
-                            setState(() {});
-                          },
-                        ),
+                        Container(
+                          width: 130.w,
+                          height: 40.h,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Color(0xffFFCE0C),
+                            ),
+                            //color: Color(0xff519872),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(20),
+                            ),
+                          ),
+                          margin: EdgeInsets.only(right: 15),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.transparent,
+                                //foregroundColor: Colors.black,
+                                elevation: 0,
+                                padding: EdgeInsets.zero,
+                              ),
+                              child: const Text(
+                                "ЗВ'ЯЗАТИСЯ",
+                                style: TextStyle(
+                                  // color: Color(0xffFFCE0C),
+                                  fontSize: 16,
+                                ),
+                              ),
+                              onPressed: () => _showAlertDialog(data.contacts),
+                            ),
+                          ),
+                        )
                       ],
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(
-                        bottom: 10,
-                      ),
-                      child: Text(
-                        (data.address != null)
-                            ? "Адреса: ${data.address}"
-                            : "Адреса відсутня",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.normal,
-                          color: Colors.white54,
-                          fontSize: 18,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                    ),
-                    Container(
-                      width: 362,
-                      height: 70,
-                      decoration: const BoxDecoration(
-                        color: Color(0xff16382B),
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                      ),
-                      //color: Colors.amber,
-                      margin: EdgeInsets.only(bottom: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(left: 15),
-                            child: Text(
-                              (data.isFree == false)
-                                  ? data.price.toString()
-                                  : "Безкоштовно",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 28,
-                              ),
-                            ),
+                  ),
+                  (data.description.isEmpty)
+                      ? Container()
+                      : Container(
+                          width: 342.w,
+                          margin: const EdgeInsets.only(bottom: 10),
+                          padding: const EdgeInsets.only(top: 10, bottom: 10),
+                          decoration: const BoxDecoration(
+                            color: Color(0xff16382B),
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
                           ),
-                          Container(
-                            width: 130.w,
-                            height: 40.h,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color: Color(0xffFFCE0C),
-                              ),
-                              //color: Color(0xff519872),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(20),
-                              ),
-                            ),
-                            margin: EdgeInsets.only(right: 15),
-                            child: ClipRRect(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.transparent,
-                                  //foregroundColor: Colors.black,
-                                  elevation: 0,
-                                  padding: EdgeInsets.zero,
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 342.w,
+                                padding: const EdgeInsets.only(bottom: 10),
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Color(0xff519872),
+                                      width: 1,
+                                    ),
+                                  ),
                                 ),
                                 child: const Text(
-                                  "ЗВ'ЯЗАТИСЯ",
+                                  "ОПИС",
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    // color: Color(0xffFFCE0C),
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.only(
+                                  top: 10,
+                                  bottom: 10,
+                                  left: 15,
+                                  right: 15,
+                                ),
+                                child: Text(
+                                  (data.description == '') ? "-" : data.description,
+                                  style: const TextStyle(
                                     fontSize: 16,
                                   ),
                                 ),
-                                onPressed: () =>
-                                    _showAlertDialog(data.contacts),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    (data.description.isEmpty)
-                        ? Container()
-                        : Container(
-                            width: 342.w,
-                            margin: const EdgeInsets.only(bottom: 10),
-                            padding: const EdgeInsets.only(top: 10, bottom: 10),
-                            decoration: const BoxDecoration(
-                              color: Color(0xff16382B),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 342.w,
-                                  padding: const EdgeInsets.only(bottom: 10),
-                                  decoration: const BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        color: Color(0xff519872),
-                                        width: 1,
-                                      ),
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    "ОПИС",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.only(
-                                    top: 10,
-                                    bottom: 10,
-                                    left: 15,
-                                    right: 15,
-                                  ),
-                                  child: Text(
-                                    (data.description == '')
-                                        ? "-"
-                                        : data.description,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  alignment: Alignment.centerLeft,
-                                )
-                              ],
-                            ),
-                            //alignment: Alignment.center,
-                          ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 15),
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Дата публікації: ${data.createdAt.hour}:${data.createdAt.minute} ${data.createdAt.day}.${data.createdAt.month}.${data.createdAt.year}",
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.white54,
-                        ),
-                      ),
-                    ),
-                    (user.uid == data.authorUid)
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    width: 1,
-                                    color: Color(0xffFFCE0C),
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                ),
-                                height: 50.h,
-                                width: 150.w,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(20),
-                                  ),
-                                  child: ElevatedButton(
-                                    onPressed: () => print("edit post"),
-                                    child: Text(
-                                      "Редагувати",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.transparent,
-                                      //foregroundColor: Colors.black,
-                                      elevation: 0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    width: 1,
-                                    color: Color(0xffFFCE0C),
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                ),
-                                height: 50.h,
-                                width: 150.w,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(20),
-                                  ),
-                                  child: ElevatedButton(
-                                    onPressed: () => print("delete post"),
-                                    child: Text(
-                                      "Видалити",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.transparent,
-                                      //foregroundColor: Colors.black,
-                                      elevation: 0,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                                alignment: Alignment.centerLeft,
+                              )
                             ],
-                          )
-                        : Container(
-                            height: 1.h,
                           ),
-                  ],
-                ),
+                          //alignment: Alignment.center,
+                        ),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 15),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Дата публікації: ${data.createdAt.hour}:${data.createdAt.minute} ${data.createdAt.day}.${data.createdAt.month}.${data.createdAt.year}",
+                      style: const TextStyle(
+                        fontSize: 18,
+                        color: Colors.white54,
+                      ),
+                    ),
+                  ),
+                  (user.uid == data.authorUid)
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: Color(0xffFFCE0C),
+                                ),
+                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                              ),
+                              height: 50.h,
+                              width: 150.w,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                                child: ElevatedButton(
+                                  onPressed: () => navigateToEditPost(context),
+                                  child: Text(
+                                    "Редагувати",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.transparent,
+                                    //foregroundColor: Colors.black,
+                                    elevation: 0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: Color(0xffFFCE0C),
+                                ),
+                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                              ),
+                              height: 50.h,
+                              width: 150.w,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                                child: ElevatedButton(
+                                  onPressed: () => deletePost(context),
+                                  child: Text(
+                                    "Видалити",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.transparent,
+                                    //foregroundColor: Colors.black,
+                                    elevation: 0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : Container(
+                          height: 1.h,
+                        ),
+                ],
               ),
             ),
+          );
+        },
         error: (error, stackTrace) => ErrorText(error: error.toString()),
         loading: () => const Loader());
   }

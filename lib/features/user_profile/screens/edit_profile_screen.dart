@@ -18,10 +18,13 @@ class EditProfileScreen extends ConsumerStatefulWidget {
 class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   File? profileFile;
   //final nameEditController = TextEditingController();
-  late TextEditingController nameEditController;
-  //late TextEditingController addressEditController;
-  //late TextEditingController contactEditController;
+  final nameEditController = TextEditingController();
+  final addressEditController = TextEditingController();
+  final contactEditController = TextEditingController();
 
+  bool inited = true;
+
+  final _formKey = GlobalKey<FormState>();
   void selectProfileImage() async {
     final res = await pickImage();
 
@@ -32,19 +35,17 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     }
   }
 
-  void save() {
+  void save(BuildContext context) {
     ref.read(userProfileControllerProvider.notifier).editProfile(
-          profileFile: profileFile,
-          context: context,
-          name: nameEditController.text.trim(),
-          //dfAddress: addressEditController.text.trim(),
-          //dfContact: contactEditController.text.trim()
-        );
+        profileFile: profileFile,
+        context: context,
+        name: nameEditController.text.trim(),
+        address: addressEditController.text.trim(),
+        contact: contactEditController.text.trim());
   }
 
   @override
   void initState() {
-    nameEditController = TextEditingController(text: ref.read(userProvider)!.name);
     super.initState();
   }
 
@@ -52,106 +53,116 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   void dispose() {
     super.dispose();
     nameEditController.dispose();
-    //addressEditController.dispose();
-    //contactEditController.dispose();
+    addressEditController.dispose();
+    contactEditController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider)!;
     return ref.watch(getUserDataProvider(user.uid)).when(
-          data: (data) => Scaffold(
-            appBar: AppBar(title: const Text('Редагування профілю')),
-            body: Center(
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(top: 25),
-                    child: GestureDetector(
-                      onTap: selectProfileImage,
-                      child: profileFile != null
-                          ? CircleAvatar(
-                              backgroundImage: FileImage(profileFile!),
-                              radius: 32,
-                            )
-                          : CircleAvatar(
-                              backgroundImage: NetworkImage(user.profilePicture),
-                              radius: 32,
-                            ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(top: 5, bottom: 25),
-                    child: Text(
-                      "Змінити аватар",
-                      style: TextStyle(
-                        fontSize: 16,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      maxLines: 2,
-                    ),
-                  ),
-                  Container(
-                  padding: const EdgeInsets.only(left: 25, right: 25),
+          data: (data) {
+            if (inited) {
+              nameEditController.text = data.name;
+              contactEditController.text = data.dfContact;
+              addressEditController.text = data.dfAddress;
+              inited = false;
+            }
+
+            return Scaffold(
+              appBar: AppBar(title: const Text('Редагування профілю')),
+              body: Center(
+                child: Form(
+                  key: _formKey,
                   child: Column(
-                    children: <Widget>[
-                      TextFormField(
-                        decoration: InputDecoration(labelText: "Ім'я користувача"),
-                        controller: nameEditController,
-                        validator: (value) {
-                          if (value=='') {
-                            return "Це поле обов'язкове!";
-                          }
-                          return null;
-                        }
-                      ),
-                      TextFormField(
-                        decoration: InputDecoration(labelText: "Адреса"),
-                        //controller: nameEditController,
-                        validator: (value) {
-                          if (value=='') {
-                            return "Це поле обов'язкове!";
-                          }
-                          return null;
-                        }
-                      ),
-                      TextFormField(
-                        decoration: InputDecoration(labelText: "Контакти"),
-                        //controller: nameEditController,
-                        validator: (value) {
-                          if (value=='') {
-                            return "Це поле обов'язкове!";
-                          }
-                          return null;
-                        }
-                      ),
-                    ]
-                  ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 25, right: 5),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1,
-                        color: Color(0xffFFCE0C),
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(20)),
-                    ),
-                    child: TextButton(
-                      onPressed: save,
-                      child: const Text(
-                        'Зберегти зміни',
-                        style: TextStyle(
-                          color: Color(0xffFFCE0C),
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.only(top: 25),
+                        child: GestureDetector(
+                          onTap: selectProfileImage,
+                          child: profileFile != null
+                              ? CircleAvatar(
+                                  backgroundImage: FileImage(profileFile!),
+                                  radius: 32,
+                                )
+                              : CircleAvatar(
+                                  backgroundImage: NetworkImage(user.profilePicture),
+                                  radius: 32,
+                                ),
                         ),
                       ),
-                    ),
+                      Container(
+                        padding: const EdgeInsets.only(top: 5, bottom: 25),
+                        child: Text(
+                          "Змінити аватар",
+                          style: TextStyle(
+                            fontSize: 16,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          maxLines: 2,
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(left: 25, right: 25),
+                        child: Column(children: <Widget>[
+                          TextFormField(
+                              decoration: InputDecoration(labelText: "Ім'я користувача"),
+                              controller: nameEditController,
+                              validator: (value) {
+                                if (value == '') {
+                                  return "Це поле обов'язкове!";
+                                }
+                                return null;
+                              }),
+                          TextFormField(
+                              decoration: InputDecoration(labelText: "Адреса"),
+                              controller: addressEditController,
+                              validator: (value) {
+                                if (value == '') {
+                                  return "Це поле обов'язкове!";
+                                }
+                                return null;
+                              }),
+                          TextFormField(
+                              decoration: InputDecoration(labelText: "Контакти"),
+                              controller: contactEditController,
+                              validator: (value) {
+                                if (value == '') {
+                                  return "Це поле обов'язкове!";
+                                }
+                                return null;
+                              }),
+                        ]),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 25, right: 5),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: Color(0xffFFCE0C),
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: TextButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              save(context);
+                            }
+                          },
+                          child: const Text(
+                            'Зберегти зміни',
+                            style: TextStyle(
+                              color: Color(0xffFFCE0C),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
           error: (error, stackTrace) => ErrorText(
             error: error.toString(),
           ),

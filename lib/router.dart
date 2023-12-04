@@ -1,6 +1,8 @@
 import 'package:dormnow/features/auth/screens/login_screen.dart';
 import 'package:dormnow/features/home/screens/bottom_nav.dart';
 import 'package:dormnow/features/posts/screens/add_post_screen.dart';
+import 'package:dormnow/features/posts/screens/add_post_screen_legacy.dart';
+import 'package:dormnow/features/posts/screens/edit_post_screen.dart';
 import 'package:dormnow/features/posts/screens/gallery_screen.dart';
 import 'package:dormnow/features/user_profile/screens/edit_profile_screen.dart';
 import 'package:dormnow/features/user_profile/screens/user_profile_screen.dart';
@@ -17,10 +19,15 @@ final loggedInRoute = RouteMap(routes: {
         child: BottomNavigator(),
       ),
   '/add-post': (_) => const MaterialPage(
-        child: AddPostScreen(),
+        child: AddAdvertScreen(),
       ),
   '/post/:postId': (route) => MaterialPage(
         child: OrderPage(
+          postId: route.pathParameters['postId']!,
+        ),
+      ),
+  '/post/:postId/edit': (route) => MaterialPage(
+        child: EditPostScreen(
           postId: route.pathParameters['postId']!,
         ),
       ),

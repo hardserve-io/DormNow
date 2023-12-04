@@ -7,8 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LazyLoadWidget extends ConsumerStatefulWidget {
-  final Future<(List<Post>, List<QueryDocumentSnapshot<Object?>>?)> Function(
-      QueryDocumentSnapshot<Object?>?) loadFrom;
+  final Future<(List<Post>, List<QueryDocumentSnapshot<Object?>>?)> Function(QueryDocumentSnapshot<Object?>?) loadFrom;
   const LazyLoadWidget({super.key, required this.loadFrom});
 
   @override
@@ -62,8 +61,7 @@ class _LazyLoadWidgetState extends ConsumerState<LazyLoadWidget> {
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
         if (notification is ScrollEndNotification) {
-          if (notification.metrics.pixels ==
-              notification.metrics.maxScrollExtent) {
+          if (notification.metrics.pixels == notification.metrics.maxScrollExtent) {
             loadPosts();
           }
         }
@@ -81,7 +79,11 @@ class _LazyLoadWidgetState extends ConsumerState<LazyLoadWidget> {
               if (index < listDocument.length) {
                 final Post post = listDocument[index];
                 final key = UniqueKey();
-                return OrderMiniature(order: post, key: key);
+                return OrderMiniature(
+                  order: post,
+                  key: key,
+                  refreshParent: refresh,
+                );
               } else {
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 32),
