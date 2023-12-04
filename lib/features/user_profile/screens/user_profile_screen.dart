@@ -190,6 +190,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                   height: 150.h,
                                   width: 245.w,
                                   child: Column(
+
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
