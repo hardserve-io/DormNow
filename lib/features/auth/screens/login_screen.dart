@@ -18,23 +18,35 @@ class LoginScreen extends ConsumerWidget {
           'DormNow',
           style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Color(0xffFFCE0C)
+              color: Colors.white
             ),
           ),
         backgroundColor: const Color(0xff16382B),
         elevation: 0,
         actions: [
-          TextButton(
-            onPressed: () {},
-            child: const Text(
-              'Skip',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Color(0xffFFCE0C)
+            Container(
+              width: 80,
+              margin: EdgeInsets.only(top: 10, bottom: 10, right: 10),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 1,
+                  color: Color(0xffFFCE0C),
                 ),
-            ),
-          ),
-        ],
+                borderRadius: BorderRadius.all(
+                    Radius.circular(40)),
+              ), 
+              child: TextButton(
+                onPressed: () {},
+                child: Text(
+                  'Skip',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white
+                  ),
+                ),
+              )
+            )
+          ],
       ),
       body: isLoading
           ? const Loader()

@@ -13,8 +13,8 @@ class SignInButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       margin: EdgeInsets.only(top: 200),
-      width: 200,
-      height: 80,
+      width: 240,
+      height: 60,
       decoration: BoxDecoration(
         border: Border.all(
           width: 1,
@@ -29,7 +29,7 @@ class SignInButton extends ConsumerWidget {
           'Вхід через Google',
           style: TextStyle(
               fontSize: 20,
-              color: Color(0xffFFCE0C),
+              color: Colors.white
             )
           ),
       )
