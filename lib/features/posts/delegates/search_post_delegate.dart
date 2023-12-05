@@ -28,12 +28,6 @@ class SearchPostDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    print('here');
-    return const SizedBox();
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
     return FutureBuilder(
       future: ref.read(postContollerProvider.notifier).searchPosts(query),
       builder: (context, snapshot) {
@@ -55,5 +49,10 @@ class SearchPostDelegate extends SearchDelegate {
         }
       },
     );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return const SizedBox();
   }
 }
