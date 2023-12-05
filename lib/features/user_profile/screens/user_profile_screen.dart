@@ -11,6 +11,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:routemaster/routemaster.dart';
+import 'package:autoscale_tabbarview/autoscale_tabbarview.dart';
+
 
 class UserProfileScreen extends ConsumerStatefulWidget {
   final String? uid;
@@ -286,35 +288,61 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                             margin: EdgeInsets.only(top: 30),
                             child: DefaultTabController(
                                 length: 2,
-                                child: TabBar(
-                                  onTap: (selectedTabIndex) {},
-                                  indicatorColor: Color(0xffFFCE0C),
-                                  tabs: [
-                                    Tab(text: "Власні"),
-                                    Tab(text: "Уподобані"),
-                                  ],
-                                )),
-                          ),
-                          ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: listDocument.length + 1,
-                            itemBuilder: (context, index) {
-                              if (index < listDocument.length) {
-                                final Post post = listDocument[index];
-                                final key = UniqueKey();
-                                return OrderMiniature(
-                                  order: post,
-                                  key: key,
-                                  refreshParent: refresh,
-                                );
-                              } else {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 32),
-                                  child: moreToLoad ? const Loader() : Container(),
-                                );
-                              }
-                            },
+                                child: Column(
+                                  children: [ 
+                                    TabBar(
+                                      indicatorColor: Color(0xffFFCE0C),
+                                      tabs: [
+                                        Tab(text: "Власні"),
+                                        Tab(text: "Уподобані"),
+                                      ],
+                                    ),
+                                    AutoScaleTabBarView(
+                                      children:
+                                      [
+                                        Container( child: ListView.builder(
+                                          physics: const BouncingScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: listDocument.length + 1,
+                                          itemBuilder: (context, index) {
+                                            if (index < listDocument.length) {
+                                              final Post post = listDocument[index];
+                                              final key = UniqueKey();
+                                              return OrderMiniature(order: post, key: key);
+                                            } else {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(vertical: 32),
+                                                child:
+                                                    moreToLoad ? const Loader() : Container(),
+                                              );
+                                            }
+                                          },
+                                        )),
+                                        Container(child: ListView.builder(
+                                          physics: const BouncingScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: listDocument.length + 1,
+                                          itemBuilder: (context, index) {
+                                            if (index < listDocument.length) {
+                                              final Post post = listDocument[index];
+                                              final key = UniqueKey();
+                                              return OrderMiniature(order: post, key: key);
+                                            } else {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(vertical: 32),
+                                                child:
+                                                    moreToLoad ? const Loader() : Container(),
+                                              );
+                                            }
+                                          },
+                                        )),
+                                      ]
+                                    )
+                                  ]
+                                ),
+                              )
                           ),
                         ],
                       ),
