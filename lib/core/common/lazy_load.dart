@@ -70,6 +70,7 @@ class _LazyLoadWidgetState extends ConsumerState<LazyLoadWidget> {
         return true;
       },
       child: RefreshIndicator(
+        color: Color(0xff519872),
         onRefresh: refresh,
         child: Padding(
           padding: const EdgeInsets.only(left: 25, right: 25),
