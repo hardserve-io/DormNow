@@ -3,13 +3,13 @@ import 'package:dormnow/core/constants/firebase_constants.dart';
 import 'package:dormnow/core/failure.dart';
 import 'package:dormnow/core/providers/firebase_providers.dart';
 import 'package:dormnow/core/type_defs.dart';
-import 'package:dormnow/features/user_profile/controller/user_profile_controller.dart';
+// import 'package:dormnow/features/user_profile/controller/user_profile_controller.dart';
 import 'package:dormnow/models/post_model.dart';
 import 'package:dormnow/models/user_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:quiver/iterables.dart';
-import 'package:rxdart/transformers.dart';
+// import 'package:quiver/iterables.dart';
+// import 'package:rxdart/transformers.dart';
 
 final userProfileRepositoryProvider = Provider((ref) {
   return UserProfileRepository(firestore: ref.watch(firestoreProvider));
@@ -17,10 +17,13 @@ final userProfileRepositoryProvider = Provider((ref) {
 
 class UserProfileRepository {
   final FirebaseFirestore _firestore;
-  UserProfileRepository({required FirebaseFirestore firestore}) : _firestore = firestore;
+  UserProfileRepository({required FirebaseFirestore firestore})
+      : _firestore = firestore;
 
-  CollectionReference get _users => _firestore.collection(FirebaseConstants.usersCollection);
-  CollectionReference get _posts => _firestore.collection(FirebaseConstants.postsCollection);
+  CollectionReference get _users =>
+      _firestore.collection(FirebaseConstants.usersCollection);
+  CollectionReference get _posts =>
+      _firestore.collection(FirebaseConstants.postsCollection);
 
   FutureVoid editProfile(UserModel user) async {
     try {
@@ -64,7 +67,9 @@ class UserProfileRepository {
 
     final res = await fetchedPosts.get();
 
-    final resDone = res.docs.map((e) => Post.fromMap(e.data() as Map<String, dynamic>)).toList();
+    final resDone = res.docs
+        .map((e) => Post.fromMap(e.data() as Map<String, dynamic>))
+        .toList();
     if (resDone.isEmpty) {
       return left(Failure(postIds));
     }
@@ -74,7 +79,10 @@ class UserProfileRepository {
   Future<List<Either<Failure, Post>>> getFavPosts({
     required List<String> postIds,
   }) async {
-    var posts = await Future.wait(postIds.asMap().entries.map((postId) => getFavPost(postIds: postId.value)));
+    var posts = await Future.wait(postIds
+        .asMap()
+        .entries
+        .map((postId) => getFavPost(postIds: postId.value)));
     print(posts.length);
     return posts;
   }

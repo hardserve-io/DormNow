@@ -12,7 +12,8 @@ class EditProfileScreen extends ConsumerStatefulWidget {
   const EditProfileScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _EditProfileScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _EditProfileScreenState();
 }
 
 class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
@@ -80,42 +81,64 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                         padding: const EdgeInsets.only(top: 25),
                         child: GestureDetector(
                           onTap: selectProfileImage,
-                          child: profileFile != null
-                              ? CircleAvatar(
-                                  backgroundImage: FileImage(profileFile!),
-                                  radius: 32,
-                                )
-                              : CircleAvatar(
-                                  backgroundImage: NetworkImage(user.profilePicture),
-                                  radius: 32,
+                          child: Column(
+                            children: [
+                              profileFile != null
+                                  ? CircleAvatar(
+                                      backgroundImage: FileImage(profileFile!),
+                                      radius: 50,
+                                    )
+                                  : CircleAvatar(
+                                      backgroundImage:
+                                          NetworkImage(user.profilePicture),
+                                      radius: 50,
+                                    ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: const Color(0xffFFCE0C),
+                                  ),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(20)),
                                 ),
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.only(top: 5, bottom: 25),
-                        child: Text(
-                          "Змінити аватар",
-                          style: TextStyle(
-                            fontSize: 16,
-                            overflow: TextOverflow.ellipsis,
+                                padding: const EdgeInsets.only(
+                                  top: 15,
+                                  bottom: 15,
+                                  left: 20,
+                                  right: 20,
+                                ),
+                                margin: const EdgeInsets.only(top: 20),
+                                child: const Text(
+                                  "Змінити аватар",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  maxLines: 2,
+                                ),
+                              ),
+                            ],
                           ),
-                          maxLines: 2,
                         ),
                       ),
                       Container(
                         padding: const EdgeInsets.only(left: 25, right: 25),
                         child: Column(children: <Widget>[
                           TextFormField(
-                              decoration: InputDecoration(labelText: "Ім'я користувача"),
-                              controller: nameEditController,
-                              validator: (value) {
-                                if (value == '') {
-                                  return "Це поле обов'язкове!";
-                                }
-                                return null;
-                              }),
+                            decoration: const InputDecoration(
+                                labelText: "Ім'я користувача"),
+                            controller: nameEditController,
+                            validator: (value) {
+                              if (value == '') {
+                                return "Це поле обов'язкове!";
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 10),
                           TextFormField(
-                              decoration: InputDecoration(labelText: "Адреса"),
+                              decoration:
+                                  const InputDecoration(labelText: "Адреса"),
                               controller: addressEditController,
                               validator: (value) {
                                 if (value == '') {
@@ -123,8 +146,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                 }
                                 return null;
                               }),
+                          const SizedBox(height: 10),
                           TextFormField(
-                              decoration: InputDecoration(labelText: "Контакти"),
+                              decoration:
+                                  const InputDecoration(labelText: "Контакти"),
                               controller: contactEditController,
                               validator: (value) {
                                 if (value == '') {
@@ -135,13 +160,20 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                         ]),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 25, right: 5),
+                        margin: const EdgeInsets.only(top: 25, right: 5),
+                        padding: const EdgeInsets.only(
+                          top: 0,
+                          bottom: 0,
+                          right: 15,
+                          left: 15,
+                        ),
                         decoration: BoxDecoration(
                           border: Border.all(
                             width: 1,
-                            color: Color(0xffFFCE0C),
+                            color: const Color(0xffFFCE0C),
                           ),
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
                         ),
                         child: TextButton(
                           onPressed: () {
@@ -152,7 +184,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                           child: const Text(
                             'Зберегти зміни',
                             style: TextStyle(
-                              color: Color(0xffFFCE0C),
+                              color: Colors.white,
+                              fontSize: 16,
                             ),
                           ),
                         ),

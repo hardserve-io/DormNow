@@ -1,16 +1,17 @@
 import 'dart:io';
 import 'package:dormnow/core/common/gallery_view.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:typed_data';
+// import 'dart:typed_data';
 
 class GalleryChoiseWidget extends ConsumerStatefulWidget {
   final ValueChanged<List<String>> onImagesChanged;
   final List<String> previousImages;
-  const GalleryChoiseWidget({super.key, required this.previousImages, required this.onImagesChanged});
+  const GalleryChoiseWidget(
+      {super.key, required this.previousImages, required this.onImagesChanged});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AddPostScreenState();
@@ -20,7 +21,8 @@ class _AddPostScreenState extends ConsumerState<GalleryChoiseWidget> {
   final _formKey = GlobalKey<FormState>();
   //List<PlatformFile> files = [];
   List<String> urlImages = []; // Add this list to store image URLs
-  void openGallery(BuildContext context) => Navigator.of(context).push(MaterialPageRoute(
+  void openGallery(BuildContext context) =>
+      Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => GalleryWidget(
           urlImages: urlImages,
         ),
@@ -68,20 +70,23 @@ class _AddPostScreenState extends ConsumerState<GalleryChoiseWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Form(
             key: _formKey,
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 10.0,
                 ),
                 urlImages.length < 10
                     ? IconButton(
                         iconSize: 30.h,
-                        icon: const Icon(Icons.add),
+                        icon: const Icon(
+                          Icons.add,
+                          color: Color(0xffFFCE0C),
+                        ),
                         onPressed: _pickImageFromGallery,
                       )
                     : SizedBox(
@@ -100,17 +105,30 @@ class _AddPostScreenState extends ConsumerState<GalleryChoiseWidget> {
                     },
                   ),
                 ),
-                ElevatedButton(
-                    onPressed: () {
-                      widget.onImagesChanged(urlImages);
-                      Navigator.pop(context);
-                    },
-                    child: Text('Save')),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: const Color(0xffFFCE0C)),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        //foregroundColor: Colors.black,
+                        elevation: 0,
+                      ),
+                      onPressed: () {
+                        widget.onImagesChanged(urlImages);
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Зберегти')),
+                ),
                 // InkWell(
                 //   child: Ink.image(image: NetworkImage(urlImages.first), height: 200, fit: BoxFit.cover),
                 //   onTap: () => openGallery(context),
                 // ),
-                SizedBox(
+                const SizedBox(
                   height: 30.0,
                 ),
               ],
@@ -143,7 +161,7 @@ class _AddPostScreenState extends ConsumerState<GalleryChoiseWidget> {
                     fit: BoxFit.cover,
                   ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10.0,
           ),
           InkWell(

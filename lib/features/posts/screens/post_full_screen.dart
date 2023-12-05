@@ -24,7 +24,9 @@ class OrderPage extends ConsumerStatefulWidget {
 
 class _OrderPageState extends ConsumerState<OrderPage> {
   void toggleFavorites() {
-    ref.read(userProfileControllerProvider.notifier).addOrRemoveFromFavorites(context, widget.postId);
+    ref
+        .read(userProfileControllerProvider.notifier)
+        .addOrRemoveFromFavorites(context, widget.postId);
   }
 
   void navigateToEditPost(BuildContext context) {
@@ -47,39 +49,53 @@ class _OrderPageState extends ConsumerState<OrderPage> {
           title: const Text(
             'Контакти:',
             textAlign: TextAlign.center,
+            style: TextStyle(color: Color(0xffFFCE0C)),
           ),
-          backgroundColor: Color(0xff16382B),
+          backgroundColor: const Color(0xff16382B),
           //iconColor: Color(0xffFFCE0C),
           content: Text(
             "${text}",
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
             ),
             textAlign: TextAlign.center,
           ),
           actions: <Widget>[
-            TextButton(
-              child: const Text(
-                'Копіювати',
-                style: TextStyle(
-                  color: Color(0xffFFCE0C),
-                ),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(width: 1, color: Color(0xffFFCE0C)),
+                borderRadius: BorderRadius.all(Radius.circular(20)),
               ),
-              onPressed: () {
-                print("${text} copied to clipboard");
-                Clipboard.setData(ClipboardData(text: text));
-              },
+              child: TextButton(
+                child: const Text(
+                  'Копіювати',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () {
+                  print("${text} copied to clipboard");
+                  Clipboard.setData(ClipboardData(text: text));
+                },
+              ),
             ),
-            TextButton(
-              child: const Text(
-                'Закрити',
-                style: TextStyle(
-                  color: Color(0xffFFCE0C),
-                ),
+            Container(
+              margin: EdgeInsets.only(left: 15),
+              decoration: BoxDecoration(
+                border: Border.all(width: 1, color: Color(0xffFFCE0C)),
+                borderRadius: BorderRadius.all(Radius.circular(20)),
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              child: TextButton(
+                child: const Text(
+                  'Закрити',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
             ),
           ],
         );
@@ -92,17 +108,17 @@ class _OrderPageState extends ConsumerState<OrderPage> {
         imageBuilder: (context, ImageProvider) => Container(
           height: 400.h,
           width: 362.w,
-          margin: EdgeInsets.symmetric(horizontal: 10),
+          margin: const EdgeInsets.symmetric(horizontal: 10),
           child: Ink.image(
             image: ImageProvider,
             fit: BoxFit.cover,
           ),
         ),
-        placeholder: (context, url) => Loader(),
+        placeholder: (context, url) => const Loader(),
       );
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     final user = ref.watch(userProvider);
     bool liked = user!.likedMarketAdverts.contains(widget.postId);
 
@@ -127,26 +143,29 @@ class _OrderPageState extends ConsumerState<OrderPage> {
                   (data.pictures.isEmpty)
                       ? CachedNetworkImage(
                           imageUrl: Constants.postThumbnailDefault,
-                          imageBuilder: (context, imageProvider) => Container(
-                            child: Image(image: imageProvider),
-                          ),
-                          placeholder: (context, url) => Loader(),
+                          imageBuilder: (context, imageProvider) =>
+                              Image(image: imageProvider),
+                          placeholder: (context, url) => const Loader(),
                         )
                       : InkWell(
                           child: (data.pictures.length == 1)
                               ? CachedNetworkImage(
                                   imageUrl: data.pictures[0],
-                                  imageBuilder: (context, imageProvider) => Ink.image(
+                                  imageBuilder: (context, imageProvider) =>
+                                      Ink.image(
                                     image: imageProvider,
                                     height: 400.h,
                                     fit: BoxFit.fitWidth,
                                   ),
-                                  placeholder: (context, url) => Loader(),
+                                  placeholder: (context, url) => const Loader(),
                                 )
                               : CarouselSlider.builder(
-                                  itemCount: (data.pictures.isEmpty) ? 1 : data.pictures.length,
+                                  itemCount: (data.pictures.isEmpty)
+                                      ? 1
+                                      : data.pictures.length,
                                   itemBuilder: (context, index, realIndex) {
-                                    return buildImage(data.pictures[index], index);
+                                    return buildImage(
+                                        data.pictures[index], index);
                                   },
                                   options: CarouselOptions(
                                     height: 400.h,
@@ -198,9 +217,12 @@ class _OrderPageState extends ConsumerState<OrderPage> {
                       ),
                       IconButton(
                         padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(minWidth: 10, minHeight: 10),
+                        constraints:
+                            const BoxConstraints(minWidth: 10, minHeight: 10),
                         alignment: Alignment.topLeft,
-                        icon: liked ? const Icon(Icons.favorite) : const Icon(Icons.favorite_border_outlined),
+                        icon: liked
+                            ? const Icon(Icons.favorite)
+                            : const Icon(Icons.favorite_border_outlined),
                         color: const Color(0xffFFCE0C),
                         iconSize: 36,
                         onPressed: () {
@@ -215,7 +237,9 @@ class _OrderPageState extends ConsumerState<OrderPage> {
                       bottom: 10,
                     ),
                     child: Text(
-                      (data.address != null) ? "Адреса: ${data.address}" : "Адреса відсутня",
+                      (data.address != null)
+                          ? "Адреса: ${data.address}"
+                          : "Адреса відсутня",
                       style: const TextStyle(
                         fontWeight: FontWeight.normal,
                         color: Colors.white54,
@@ -233,14 +257,16 @@ class _OrderPageState extends ConsumerState<OrderPage> {
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     //color: Colors.amber,
-                    margin: EdgeInsets.only(bottom: 20),
+                    margin: const EdgeInsets.only(bottom: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(left: 15),
+                          margin: const EdgeInsets.only(left: 15),
                           child: Text(
-                            (data.isFree == false) ? data.price.toString() : "Безкоштовно",
+                            (data.isFree == false)
+                                ? data.price.toString()
+                                : "Безкоштовно",
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 28,
@@ -253,16 +279,17 @@ class _OrderPageState extends ConsumerState<OrderPage> {
                           decoration: BoxDecoration(
                             border: Border.all(
                               width: 1,
-                              color: Color(0xffFFCE0C),
+                              color: const Color(0xffFFCE0C),
                             ),
                             //color: Color(0xff519872),
                             borderRadius: const BorderRadius.all(
                               Radius.circular(20),
                             ),
                           ),
-                          margin: EdgeInsets.only(right: 15),
+                          margin: const EdgeInsets.only(right: 15),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(20)),
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.transparent,
@@ -323,20 +350,22 @@ class _OrderPageState extends ConsumerState<OrderPage> {
                                   left: 15,
                                   right: 15,
                                 ),
+                                alignment: Alignment.centerLeft,
                                 child: Text(
-                                  (data.description == '') ? "-" : data.description,
+                                  (data.description == '')
+                                      ? "-"
+                                      : data.description,
                                   style: const TextStyle(
                                     fontSize: 16,
                                   ),
                                 ),
-                                alignment: Alignment.centerLeft,
                               )
                             ],
                           ),
                           //alignment: Alignment.center,
                         ),
                   Container(
-                    margin: EdgeInsets.only(bottom: 15),
+                    margin: const EdgeInsets.only(bottom: 15),
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "Дата публікації: ${data.createdAt.hour}:${data.createdAt.minute} ${data.createdAt.day}.${data.createdAt.month}.${data.createdAt.year}",
@@ -354,29 +383,30 @@ class _OrderPageState extends ConsumerState<OrderPage> {
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   width: 1,
-                                  color: Color(0xffFFCE0C),
+                                  color: const Color(0xffFFCE0C),
                                 ),
-                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(20)),
                               ),
                               height: 50.h,
                               width: 150.w,
                               child: ClipRRect(
-                                borderRadius: BorderRadius.all(
+                                borderRadius: const BorderRadius.all(
                                   Radius.circular(20),
                                 ),
                                 child: ElevatedButton(
                                   onPressed: () => navigateToEditPost(context),
-                                  child: Text(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.transparent,
+                                    //foregroundColor: Colors.black,
+                                    elevation: 0,
+                                  ),
+                                  child: const Text(
                                     "Редагувати",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
                                     ),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.transparent,
-                                    //foregroundColor: Colors.black,
-                                    elevation: 0,
                                   ),
                                 ),
                               ),
@@ -385,29 +415,30 @@ class _OrderPageState extends ConsumerState<OrderPage> {
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   width: 1,
-                                  color: Color(0xffFFCE0C),
+                                  color: const Color(0xffFFCE0C),
                                 ),
-                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(20)),
                               ),
                               height: 50.h,
                               width: 150.w,
                               child: ClipRRect(
-                                borderRadius: BorderRadius.all(
+                                borderRadius: const BorderRadius.all(
                                   Radius.circular(20),
                                 ),
                                 child: ElevatedButton(
                                   onPressed: () => deletePost(context),
-                                  child: Text(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.transparent,
+                                    //foregroundColor: Colors.black,
+                                    elevation: 0,
+                                  ),
+                                  child: const Text(
                                     "Видалити",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
                                     ),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.transparent,
-                                    //foregroundColor: Colors.black,
-                                    elevation: 0,
                                   ),
                                 ),
                               ),

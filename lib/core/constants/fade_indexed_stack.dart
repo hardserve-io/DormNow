@@ -14,7 +14,8 @@ class AnimatedIndexedStack extends StatefulWidget {
   AnimatedIndexedStackState createState() => AnimatedIndexedStackState();
 }
 
-class AnimatedIndexedStackState extends State<AnimatedIndexedStack> with SingleTickerProviderStateMixin {
+class AnimatedIndexedStackState extends State<AnimatedIndexedStack>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
   late int _index;
@@ -23,7 +24,7 @@ class AnimatedIndexedStackState extends State<AnimatedIndexedStack> with SingleT
   void initState() {
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 100),
+      duration: const Duration(milliseconds: 100),
     );
     _animation = Tween(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
