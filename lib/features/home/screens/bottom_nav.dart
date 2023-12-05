@@ -1,13 +1,13 @@
 import 'package:dormnow/core/constants/fade_indexed_stack.dart';
 import 'package:dormnow/features/home/screens/home_screen.dart';
-import 'package:dormnow/features/posts/repository/post_repository.dart';
+// import 'package:dormnow/features/posts/repository/post_repository.dart';
 import 'package:dormnow/features/posts/screens/marketplace_screen.dart';
 import 'package:dormnow/features/user_profile/screens/user_profile_screen.dart';
-import 'package:dormnow/models/post_model.dart';
+// import 'package:dormnow/models/post_model.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gradient_borders/box_borders/gradient_box_border.dart';
+// import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 
 class BottomNavigator extends StatefulWidget {
   const BottomNavigator({super.key});
@@ -21,9 +21,9 @@ class _BottomNavigatorState extends State<BottomNavigator> {
 
   static List<Widget> _widgetOptions = <Widget>[
     //HomeScreen(),
-    MarketPlaceScreen(),
-    HomeScreen(),
-    UserProfileScreen(uid: null)
+    const MarketPlaceScreen(),
+    const HomeScreen(),
+    const UserProfileScreen(uid: null)
   ];
 
   @override
@@ -41,7 +41,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
           ),
           child: Container(
             decoration: BoxDecoration(
-              color: Color(0xff121212),
+              color: const Color(0xff121212),
               /*border: const GradientBoxBorder(
                 gradient: LinearGradient(
                   colors: [

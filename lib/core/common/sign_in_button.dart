@@ -12,27 +12,20 @@ class SignInButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      margin: EdgeInsets.only(top: 200),
-      width: 200,
-      height: 80,
-      decoration: BoxDecoration(
-        border: Border.all(
-          width: 1,
-          color: Color(0xffFFCE0C),
-        ),
-        borderRadius: BorderRadius.all(
-            Radius.circular(40)),
-      ),
-      child: TextButton(
-        onPressed: () => signInWithGoogle(context, ref),
-        child: Text(
-          'Вхід через Google',
-          style: TextStyle(
-              fontSize: 20,
-              color: Color(0xffFFCE0C),
-            )
+        margin: const EdgeInsets.only(top: 200),
+        width: 240,
+        height: 60,
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: 1,
+            color: const Color(0xffFFCE0C),
           ),
-      )
-    );
+          borderRadius: const BorderRadius.all(Radius.circular(40)),
+        ),
+        child: TextButton(
+          onPressed: () => signInWithGoogle(context, ref),
+          child: const Text('Вхід через Google',
+              style: TextStyle(fontSize: 20, color: Colors.white)),
+        ));
   }
 }

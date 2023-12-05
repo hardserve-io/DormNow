@@ -1,13 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dormnow/core/common/lazy_load.dart';
-import 'package:dormnow/core/common/lazy_load_scrollview.dart';
-import 'package:dormnow/core/common/loader.dart';
-import 'package:dormnow/features/auth/controller/auth_controller.dart';
+// import 'package:dormnow/core/common/lazy_load_scrollview.dart';
+// import 'package:dormnow/core/common/loader.dart';
+// import 'package:dormnow/features/auth/controller/auth_controller.dart';
 import 'package:dormnow/features/posts/controller/post_controller.dart';
 import 'package:dormnow/features/posts/delegates/search_post_delegate.dart';
 import 'package:dormnow/features/posts/screens/post_miniature.dart';
 import 'package:dormnow/features/posts/screens/search_screen.dart';
-import 'package:dormnow/models/post_model.dart';
+// import 'package:dormnow/models/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +18,8 @@ class MarketPlaceScreen extends ConsumerStatefulWidget {
   const MarketPlaceScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _MarketPlaceScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _MarketPlaceScreenState();
 }
 
 class _MarketPlaceScreenState extends ConsumerState<MarketPlaceScreen> {
@@ -43,7 +44,7 @@ class _MarketPlaceScreenState extends ConsumerState<MarketPlaceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xffFFCE0C),
+        backgroundColor: const Color(0xffFFCE0C),
         onPressed: () => navigateToCreatePost(context),
         heroTag: null,
         //color: Color(519872),
@@ -52,10 +53,10 @@ class _MarketPlaceScreenState extends ConsumerState<MarketPlaceScreen> {
         ),
       ),
       body: NestedScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         headerSliverBuilder: (_, __) => [
           SliverAppBar(
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20),
@@ -83,7 +84,7 @@ class _MarketPlaceScreenState extends ConsumerState<MarketPlaceScreen> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(left: 20),
+                    padding: const EdgeInsets.only(left: 20),
                     width: 190.w,
                     height: 12.h,
                     alignment: Alignment.bottomLeft,
@@ -97,7 +98,7 @@ class _MarketPlaceScreenState extends ConsumerState<MarketPlaceScreen> {
                     height: 20.h,
                     child: IconButton(
                       padding: EdgeInsets.zero,
-                      constraints: BoxConstraints(),
+                      constraints: const BoxConstraints(),
                       icon: SvgPicture.asset(
                         'assets/images/lupa.svg',
                         fit: BoxFit.contain,
@@ -105,12 +106,13 @@ class _MarketPlaceScreenState extends ConsumerState<MarketPlaceScreen> {
                       onPressed: () {
                         showSearch(context: context, delegate: SearchPostDelegate(ref));
                       },
+
                       alignment: Alignment.bottomLeft,
                     ),
                   ),
                 ],
               ),
-              titlePadding: EdgeInsets.only(bottom: 20),
+              titlePadding: const EdgeInsets.only(bottom: 20),
             ),
           ),
         ],

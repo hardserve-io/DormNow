@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dormnow/core/providers/storage_repository_provider.dart';
 import 'package:dormnow/core/utils.dart';
 import 'package:dormnow/features/auth/controller/auth_controller.dart';
@@ -11,7 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
 
-final userProfileControllerProvider = StateNotifierProvider<UserProfileController, bool>((ref) {
+final userProfileControllerProvider =
+    StateNotifierProvider<UserProfileController, bool>((ref) {
   final userProfileRepository = ref.watch(userProfileRepositoryProvider);
   final storageRepository = ref.watch(storageRepositoryProvider);
   return UserProfileController(
@@ -44,7 +45,8 @@ class UserProfileController extends StateNotifier<bool> {
     state = true;
     UserModel user = _ref.read(userProvider)!;
     if (profileFile != null) {
-      final res = await _storageRepository.storeFile(path: 'users/profile', id: user.uid, file: profileFile);
+      final res = await _storageRepository.storeFile(
+          path: 'users/profile', id: user.uid, file: profileFile);
       res.fold(
         (l) => showSnackBar(context, l.message),
         (r) => user = user.copyWith(profilePicture: r),
@@ -65,12 +67,16 @@ class UserProfileController extends StateNotifier<bool> {
 
   void addOrRemoveFromFavorites(BuildContext context, String postId) async {
     UserModel user = _ref.read(userProvider)!;
-    final res = await _userProfileRepository.addOrRemoveFromFavorites(postId, user);
+    final res =
+        await _userProfileRepository.addOrRemoveFromFavorites(postId, user);
     res.fold((l) => showSnackBar(context, l.message), (r) {
       if (user.likedMarketAdverts.contains(postId)) {
-        user = user.copyWith(likedMarketAdverts: List.of(user.likedMarketAdverts)..remove(postId));
+        user = user.copyWith(
+            likedMarketAdverts: List.of(user.likedMarketAdverts)
+              ..remove(postId));
       } else {
-        user = user.copyWith(likedMarketAdverts: List.of(user.likedMarketAdverts)..add(postId));
+        user = user.copyWith(
+            likedMarketAdverts: List.of(user.likedMarketAdverts)..add(postId));
       }
       _ref.read(userProvider.notifier).update((state) => user);
     });
@@ -78,12 +84,16 @@ class UserProfileController extends StateNotifier<bool> {
 
   void repoRemoveFromFavorites(String postId) async {
     UserModel user = _ref.read(userProvider)!;
-    final res = await _userProfileRepository.addOrRemoveFromFavorites(postId, user);
+    final res =
+        await _userProfileRepository.addOrRemoveFromFavorites(postId, user);
     res.fold((l) => debugPrint(l.message), (r) {
       if (user.likedMarketAdverts.contains(postId)) {
-        user = user.copyWith(likedMarketAdverts: List.of(user.likedMarketAdverts)..remove(postId));
+        user = user.copyWith(
+            likedMarketAdverts: List.of(user.likedMarketAdverts)
+              ..remove(postId));
       } else {
-        user = user.copyWith(likedMarketAdverts: List.of(user.likedMarketAdverts)..add(postId));
+        user = user.copyWith(
+            likedMarketAdverts: List.of(user.likedMarketAdverts)..add(postId));
       }
       _ref.read(userProvider.notifier).update((state) => user);
     });
@@ -112,7 +122,8 @@ class UserProfileController extends StateNotifier<bool> {
   // }
 
   Future<List<Post>> getPosts(int start, int end) async {
-    List<String> favList = _ref.read(userProvider)!.likedMarketAdverts.reversed.toList();
+    List<String> favList =
+        _ref.read(userProvider)!.likedMarketAdverts.reversed.toList();
     print(favList);
     List<String> postIds;
     if (favList.length > start) {
@@ -127,7 +138,9 @@ class UserProfileController extends StateNotifier<bool> {
     for (final r in res) {
       r.fold(
         (l) => {
-          _ref.read(userProfileControllerProvider.notifier).repoRemoveFromFavorites(l.message),
+          _ref
+              .read(userProfileControllerProvider.notifier)
+              .repoRemoveFromFavorites(l.message),
         },
         (r) => {
           favPosts.add(r),
