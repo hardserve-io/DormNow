@@ -4,6 +4,7 @@ import 'package:dormnow/core/common/lazy_load_scrollview.dart';
 import 'package:dormnow/core/common/loader.dart';
 import 'package:dormnow/features/auth/controller/auth_controller.dart';
 import 'package:dormnow/features/posts/controller/post_controller.dart';
+import 'package:dormnow/features/posts/delegates/search_post_delegate.dart';
 import 'package:dormnow/features/posts/screens/post_miniature.dart';
 import 'package:dormnow/features/posts/screens/search_screen.dart';
 import 'package:dormnow/models/post_model.dart';
@@ -40,9 +41,6 @@ class _MarketPlaceScreenState extends ConsumerState<MarketPlaceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final loading = ref.watch(refreshNotifier);
-    print('!!');
-    print(loading);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xffFFCE0C),
@@ -104,11 +102,9 @@ class _MarketPlaceScreenState extends ConsumerState<MarketPlaceScreen> {
                         'assets/images/lupa.svg',
                         fit: BoxFit.contain,
                       ),
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => SearchScreen(),
-                        ),
-                      ),
+                      onPressed: () {
+                        showSearch(context: context, delegate: SearchPostDelegate(ref));
+                      },
                       alignment: Alignment.bottomLeft,
                     ),
                   ),

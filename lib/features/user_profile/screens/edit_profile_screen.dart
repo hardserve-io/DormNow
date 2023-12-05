@@ -70,7 +70,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
             }
 
             return Scaffold(
-              appBar: AppBar(title: const Text('Редагування профілю')),
+              appBar: AppBar(
+                title: const Text('Редагування профілю'),
+                backgroundColor: const Color(0xff16382B),
+              ),
               body: Center(
                 child: Form(
                   key: _formKey,

@@ -39,4 +39,7 @@ final loggedInRoute = RouteMap(routes: {
   '/edit-profile': (route) => const MaterialPage(
         child: EditProfileScreen(),
       ),
+  '/search': (route) => const MaterialPage(
+        child: SearchBar(),
+      ),
 });

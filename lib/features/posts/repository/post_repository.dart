@@ -75,4 +75,43 @@ class PostRepository {
       return left(Failure(e.toString()));
     }
   }
+
+  Future<List<Post>> searchPosts(String query) async {
+    query = query.toLowerCase();
+
+    final res = await _posts
+        // .where(
+        //   'title',
+        //   isGreaterThanOrEqualTo: query.isEmpty ? 0 : query,
+        //   // isLessThan: query.isEmpty
+        //   //     ? null
+        //   //     : query.substring(0, query.length - 1) +
+        //   //         String.fromCharCode(
+        //   //           query.codeUnitAt(query.length - 1) + 1,
+        //   //         ),
+        // )
+        .get();
+    return res.docs.map((e) => Post.fromMap(e.data() as Map<String, dynamic>)).toList();
+  }
+
+  // Future<QuerySnapshot<Object?>> searchPosts(
+  //     {required String query, required int limit, DocumentSnapshot? startAfter}) async {
+  //   final Query<Object?> fetchedPosts = _posts.where(
+  //     'title',
+  //     isGreaterThanOrEqualTo: query.isEmpty ? 0 : query,
+  //     isLessThan: query.isEmpty
+  //         ? null
+  //         : query.substring(0, query.length - 1) +
+  //             String.fromCharCode(
+  //               query.codeUnitAt(query.length - 1) + 1,
+  //             ),
+  //   );
+  //   //.orderBy('createdAt', descending: true)
+  //   //.limit(limit);
+  //   if (startAfter != null) {
+  //     return fetchedPosts.get();
+  //   } else {
+  //     return fetchedPosts.get();
+  //   }
+  // }
 }
