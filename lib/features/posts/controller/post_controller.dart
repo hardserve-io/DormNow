@@ -10,6 +10,7 @@ import 'package:dormnow/models/post_model.dart';
 // import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:uuid/uuid.dart';
 
@@ -238,5 +239,31 @@ class PostContoller extends StateNotifier<bool> {
 
   Future<bool> doesPostExist(String postId) async {
     return await _postRepository.doesPostExist(postId);
+  }
+
+  // Future<(List<Post>, List<QueryDocumentSnapshot<Object?>>?)> searchPosts(
+  //     String query, DocumentSnapshot? startAfter) async {
+  //   const docLimit = 5;
+  //   final snap = await _postRepository.searchPosts(query: query, limit: docLimit, startAfter: startAfter);
+  //   final lastEL = snap.docs;
+  //   print(snap.docs.map((e) => Post.fromMap(e.data() as Map<String, dynamic>)).toList());
+  //   return (snap.docs.map((e) => Post.fromMap(e.data() as Map<String, dynamic>)).toList(), lastEL);
+  // }
+
+  Future<List<Post>> searchPosts(String query) async {
+    final res = await _postRepository.searchPosts(query);
+    List<Post> resMatch = [];
+    res.forEach((element) {
+      final result = extractOne(
+        query: query,
+        choices: [element.title],
+      );
+      if (result.score >= 80) {
+        resMatch.add(element);
+      }
+    });
+    print('??');
+    print(res.map((e) => e.title));
+    return resMatch;
   }
 }

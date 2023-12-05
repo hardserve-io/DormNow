@@ -33,8 +33,45 @@ class _OrderPageState extends ConsumerState<OrderPage> {
     Routemaster.of(context).push('/post/${widget.postId}/edit');
   }
 
-  void deletePost(BuildContext context) {
-    ref.read(postContollerProvider.notifier).deletePost(widget.postId, context);
+  void deletePost(BuildContext context) async {
+    final delete = await showDialog<bool>(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: Colors.black,
+            title: const Text(
+              'Увага',
+              style: TextStyle(color: Color(0xFFFFCE0C)),
+            ),
+            content: const Text(
+              'Ви впевнені, що хочете видалити це оголошення?',
+              style: TextStyle(color: Colors.white),
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context, true);
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF16382B)),
+                ),
+                child: const Text('Так', style: TextStyle(color: Colors.white)),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context, false);
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF16382B)),
+                ),
+                child: const Text('Ні', style: TextStyle(color: Colors.white)),
+              ),
+            ],
+          );
+        });
+    if (delete == true) {
+      ref.read(postContollerProvider.notifier).deletePost(widget.postId, context);
+    }
   }
 
   Future<void> _showAlertDialog(String text) async {
@@ -124,8 +161,6 @@ class _OrderPageState extends ConsumerState<OrderPage> {
 
     return ref.watch(getPostByIdProvider(widget.postId)).when(
         data: (data) {
-          print('postFill');
-          print(data);
           return Scaffold(
             appBar: AppBar(
               backgroundColor: const Color(0xff16382B),
