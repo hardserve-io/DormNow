@@ -35,7 +35,12 @@ class UserProfileController extends StateNotifier<bool> {
         _storageRepository = storageRepository,
         super(false);
 
-  void editProfile({required File? profileFile, required BuildContext context, required String name}) async {
+  void editProfile(
+      {required File? profileFile,
+      required BuildContext context,
+      required String name,
+      required String address,
+      required String contact}) async {
     state = true;
     UserModel user = _ref.read(userProvider)!;
     if (profileFile != null) {
@@ -46,8 +51,7 @@ class UserProfileController extends StateNotifier<bool> {
       );
     }
 
-    user = user.copyWith(name: name);
-
+    user = user.copyWith(name: name, dfAddress: address, dfContact: contact);
     final res = await _userProfileRepository.editProfile(user);
     state = false;
     res.fold(
@@ -63,6 +67,19 @@ class UserProfileController extends StateNotifier<bool> {
     UserModel user = _ref.read(userProvider)!;
     final res = await _userProfileRepository.addOrRemoveFromFavorites(postId, user);
     res.fold((l) => showSnackBar(context, l.message), (r) {
+      if (user.likedMarketAdverts.contains(postId)) {
+        user = user.copyWith(likedMarketAdverts: List.of(user.likedMarketAdverts)..remove(postId));
+      } else {
+        user = user.copyWith(likedMarketAdverts: List.of(user.likedMarketAdverts)..add(postId));
+      }
+      _ref.read(userProvider.notifier).update((state) => user);
+    });
+  }
+
+  void repoRemoveFromFavorites(String postId) async {
+    UserModel user = _ref.read(userProvider)!;
+    final res = await _userProfileRepository.addOrRemoveFromFavorites(postId, user);
+    res.fold((l) => debugPrint(l.message), (r) {
       if (user.likedMarketAdverts.contains(postId)) {
         user = user.copyWith(likedMarketAdverts: List.of(user.likedMarketAdverts)..remove(postId));
       } else {
@@ -106,7 +123,18 @@ class UserProfileController extends StateNotifier<bool> {
     print("$start :: $end :: ${favList.length}");
     postIds = favList.sublist(start, end);
     final res = await _userProfileRepository.getFavPosts(postIds: postIds);
-    return res;
+    List<Post> favPosts = [];
+    for (final r in res) {
+      r.fold(
+        (l) => {
+          _ref.read(userProfileControllerProvider.notifier).repoRemoveFromFavorites(l.message),
+        },
+        (r) => {
+          favPosts.add(r),
+        },
+      );
+    }
+    return favPosts;
   }
 
   // Future<List<Post>> getFavPosts() async {

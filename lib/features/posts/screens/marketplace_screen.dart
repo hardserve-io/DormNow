@@ -5,6 +5,7 @@ import 'package:dormnow/core/common/loader.dart';
 import 'package:dormnow/features/auth/controller/auth_controller.dart';
 import 'package:dormnow/features/posts/controller/post_controller.dart';
 import 'package:dormnow/features/posts/screens/post_miniature.dart';
+import 'package:dormnow/features/posts/screens/search_screen.dart';
 import 'package:dormnow/models/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,8 +17,7 @@ class MarketPlaceScreen extends ConsumerStatefulWidget {
   const MarketPlaceScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _MarketPlaceScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _MarketPlaceScreenState();
 }
 
 class _MarketPlaceScreenState extends ConsumerState<MarketPlaceScreen> {
@@ -40,6 +40,9 @@ class _MarketPlaceScreenState extends ConsumerState<MarketPlaceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loading = ref.watch(refreshNotifier);
+    print('!!');
+    print(loading);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xffFFCE0C),
@@ -68,12 +71,7 @@ class _MarketPlaceScreenState extends ConsumerState<MarketPlaceScreen> {
                 Container(
                   width: 250.w,
                   alignment: Alignment.center,
-                  /*child: SvgPicture.asset(
-                      './assets/images/barahoholka.svg',
-                      alignment: Alignment.centerLeft,
-                    ),*/
                 ),
-                // Icon(Icons.search),
               ],
             ),
             expandedHeight: 200.h,
@@ -94,22 +92,30 @@ class _MarketPlaceScreenState extends ConsumerState<MarketPlaceScreen> {
                     child: SvgPicture.asset(
                       'assets/images/marketplace_text.svg',
                       alignment: Alignment.bottomLeft,
-                      //width: 110.w,
-                      //alignment: Alignment.bottomLeft,
                     ),
                   ),
                   Container(
                     width: 40.w,
                     height: 20.h,
-                    child: SvgPicture.asset('assets/images/lupa.svg'),
-                    alignment: Alignment.bottomLeft,
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(),
+                      icon: SvgPicture.asset(
+                        'assets/images/lupa.svg',
+                        fit: BoxFit.contain,
+                      ),
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => SearchScreen(),
+                        ),
+                      ),
+                      alignment: Alignment.bottomLeft,
+                    ),
                   ),
                 ],
               ),
-              //centerTitle: true,
               titlePadding: EdgeInsets.only(bottom: 20),
             ),
-            //bottom:
           ),
         ],
         body: LazyLoadWidget(

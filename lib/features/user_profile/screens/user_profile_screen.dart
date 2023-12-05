@@ -51,9 +51,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
         });
       }
 
-      final newDocs = await ref
-          .read(userProfileControllerProvider.notifier)
-          .getPosts(startPost, endPost);
+      final newDocs = await ref.read(userProfileControllerProvider.notifier).getPosts(startPost, endPost);
 
       startPost = endPost;
       endPost += step;
@@ -160,8 +158,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
               body: NotificationListener<ScrollNotification>(
                 onNotification: (notification) {
                   if (notification is ScrollEndNotification) {
-                    if (notification.metrics.pixels ==
-                        notification.metrics.maxScrollExtent) {
+                    if (notification.metrics.pixels == notification.metrics.maxScrollExtent) {
                       loadPosts();
                     }
                   }
@@ -195,8 +192,8 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                   height: 150.h,
                                   width: 245.w,
                                   child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
                                         alignment: Alignment.bottomLeft,
@@ -215,7 +212,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                         alignment: Alignment.bottomLeft,
                                         margin: EdgeInsets.only(bottom: 5),
                                         child: Text(
-                                          "Адреса: ",
+                                          "Адреса: ${user.dfAddress}",
                                           style: TextStyle(
                                             fontSize: 14,
                                             overflow: TextOverflow.ellipsis,
@@ -227,7 +224,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                         alignment: Alignment.bottomLeft,
                                         margin: EdgeInsets.only(bottom: 10),
                                         child: Text(
-                                          "Контакти: ",
+                                          "Контакти: ${user.dfContact}",
                                           style: TextStyle(
                                             fontSize: 14,
                                             overflow: TextOverflow.ellipsis,
@@ -238,8 +235,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                       Container(
                                         //margin: EdgeInsets.only(top: 40),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Container(
                                               margin: EdgeInsets.only(right: 5),
@@ -248,12 +244,10 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                                   width: 1,
                                                   color: Color(0xffFFCE0C),
                                                 ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20)),
+                                                borderRadius: BorderRadius.all(Radius.circular(20)),
                                               ),
                                               child: TextButton(
-                                                onPressed: () =>
-                                                    navigateToEditUser(context),
+                                                onPressed: () => navigateToEditUser(context),
                                                 child: const Text(
                                                   'Редагувати профіль',
                                                   style: TextStyle(
@@ -269,8 +263,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                                   width: 1,
                                                   color: Color(0xffFFCE0C),
                                                 ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20)),
+                                                borderRadius: BorderRadius.all(Radius.circular(20)),
                                               ),
                                               child: TextButton(
                                                 onPressed: () => logout(ref),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import "package:dormnow/core/constants/constants.dart";
 import "package:dormnow/models/post_model.dart";
 import "package:flutter/material.dart";
@@ -15,10 +16,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import "post_full_screen.dart";
 import "package:dormnow/router.dart";
 import 'package:routemaster/routemaster.dart';
-import 'package:flutter_riverpod/src/consumer.dart';
 
 class OrderMiniature extends ConsumerStatefulWidget {
-  const OrderMiniature({super.key, required this.order});
+  final VoidCallback refreshParent;
+  const OrderMiniature({super.key, required this.order, required this.refreshParent});
 
   final Post order;
 
@@ -27,14 +28,47 @@ class OrderMiniature extends ConsumerStatefulWidget {
 }
 
 class _OrderMiniature extends ConsumerState<OrderMiniature> {
-  void expandOrder() {
-    Routemaster.of(context).push('/post/${widget.order.id}');
+  void expandOrder() async {
+    if (await ref.read(postContollerProvider.notifier).doesPostExist(widget.order.id)) {
+      if (context.mounted) {
+        Routemaster.of(context).push('/post/${widget.order.id}');
+      }
+    } else {
+      widget.refreshParent();
+      if (context.mounted) {
+        await showDialog<bool>(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              backgroundColor: Colors.black,
+              title: const Text(
+                'Увага',
+                style: TextStyle(color: Color(0xFFFFCE0C)),
+              ),
+              content: const Text(
+                'Це оголошення більше не доступне',
+                style: TextStyle(color: Colors.white),
+              ),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context, true);
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF16382B)),
+                  ),
+                  child: const Text('ОК', style: TextStyle(color: Colors.white)),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    }
   }
 
   void toggleFavorites() {
-    ref
-        .read(userProfileControllerProvider.notifier)
-        .addOrRemoveFromFavorites(context, widget.order.id);
+    ref.read(userProfileControllerProvider.notifier).addOrRemoveFromFavorites(context, widget.order.id);
   }
 
   @override
@@ -70,11 +104,11 @@ class _OrderMiniature extends ConsumerState<OrderMiniature> {
                   margin: EdgeInsets.all(12),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      (widget.order.pictures.isEmpty)
-                          ? Constants.postThumbnailDefault
-                          : widget.order.pictures[0],
+                    child: CachedNetworkImage(
+                      imageUrl:
+                          (widget.order.pictures.isEmpty) ? Constants.postThumbnailDefault : widget.order.pictures[0],
                       fit: BoxFit.cover,
+                      placeholder: (context, url) => Loader(),
                     ),
                   ),
                 ),
@@ -102,15 +136,13 @@ class _OrderMiniature extends ConsumerState<OrderMiniature> {
                     Container(
                       alignment: Alignment.topRight,
                       child: Text(
-                        (widget.order.price != 0.0 &&
-                                widget.order.price != null)
+                        (widget.order.price != 0.0 && widget.order.price != null)
                             ? "${widget.order.price}₴"
                             : "Безкоштовно",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
-                          color: (widget.order.price != 0.0 &&
-                                  widget.order.price != null)
+                          color: (widget.order.price != 0.0 && widget.order.price != null)
                               ? Colors.white
                               : Color(0xffFEF6EA),
                         ),
@@ -131,9 +163,7 @@ class _OrderMiniature extends ConsumerState<OrderMiniature> {
                             //height: 17.h,
                             //margin: EdgeInsets.only(top: 0),
                             child: Text(
-                              (widget.order.address != null)
-                                  ? "Адреса: ${widget.order.address}"
-                                  : "Адреса відсутня",
+                              (widget.order.address != null) ? "Адреса: ${widget.order.address}" : "Адреса відсутня",
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
                                 color: Colors.white70,
@@ -145,11 +175,9 @@ class _OrderMiniature extends ConsumerState<OrderMiniature> {
                           ),
                           IconButton(
                             padding: EdgeInsets.zero,
-                            constraints: BoxConstraints(),
+                            constraints: BoxConstraints(minWidth: 10, minHeight: 10),
                             alignment: Alignment.topLeft,
-                            icon: liked
-                                ? Icon(Icons.favorite)
-                                : Icon(Icons.favorite_outline),
+                            icon: liked ? Icon(Icons.favorite) : Icon(Icons.favorite_outline),
                             color: Color(0xffFFCE0C),
                             iconSize: 22,
                             onPressed: () {

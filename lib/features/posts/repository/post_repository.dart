@@ -28,6 +28,16 @@ class PostRepository {
     }
   }
 
+  FutureVoid editPost(Post post) async {
+    try {
+      return right(_posts.doc(post.id).update(post.toMap()));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
   Stream<List<Post>> fetchPosts() {
     return _posts
         .orderBy('createdAt', descending: true)
@@ -47,5 +57,22 @@ class PostRepository {
 
   Stream<Post> getPostById(String postId) {
     return _posts.doc(postId).snapshots().map((event) => Post.fromMap(event.data() as Map<String, dynamic>));
+  }
+
+  Future<bool> doesPostExist(String postId) async {
+    final res = await _posts.doc(postId).get().then((value) {
+      return value.exists;
+    });
+    return res;
+  }
+
+  FutureVoid deletePost(String postId) async {
+    try {
+      return right(_posts.doc(postId).delete());
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
   }
 }
