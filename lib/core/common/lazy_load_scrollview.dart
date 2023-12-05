@@ -26,7 +26,7 @@ class LazyLoadScrollView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => LazyLoadScrollViewState();
 
-  LazyLoadScrollView({
+  const LazyLoadScrollView({
     Key? key,
     required this.child,
     required this.onEndOfPage,
@@ -58,8 +58,11 @@ class LazyLoadScrollViewState extends State<LazyLoadScrollView> {
   bool _onNotification(ScrollNotification notification, BuildContext context) {
     if (widget.scrollDirection == notification.metrics.axis) {
       if (notification is ScrollUpdateNotification) {
-        if (notification.metrics.maxScrollExtent > notification.metrics.pixels &&
-            notification.metrics.maxScrollExtent - notification.metrics.pixels <= widget.scrollOffset) {
+        if (notification.metrics.maxScrollExtent >
+                notification.metrics.pixels &&
+            notification.metrics.maxScrollExtent -
+                    notification.metrics.pixels <=
+                widget.scrollOffset) {
           _loadMore();
         }
         return true;

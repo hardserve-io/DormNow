@@ -37,7 +37,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Image Picker Example'),
+        title: const Text('Image Picker Example'),
       ),
       body: Center(
         child: Column(
@@ -50,10 +50,10 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                 height: 200,
               )
             else
-              Text('No image selected'),
+              const Text('No image selected'),
             ElevatedButton(
               onPressed: _pickImageFromGallery,
-              child: Text('Pick an image from gallery'),
+              child: const Text('Pick an image from gallery'),
             ),
           ],
         ),

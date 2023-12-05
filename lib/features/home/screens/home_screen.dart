@@ -1,11 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dormnow/core/common/lazy_load.dart';
-import 'package:dormnow/core/common/lazy_load_scrollview.dart';
-import 'package:dormnow/core/common/loader.dart';
-import 'package:dormnow/features/auth/controller/auth_controller.dart';
+// import 'package:dormnow/core/common/lazy_load_scrollview.dart';
+// import 'package:dormnow/core/common/loader.dart';
+// import 'package:dormnow/features/auth/controller/auth_controller.dart';
 import 'package:dormnow/features/posts/controller/post_controller.dart';
-import 'package:dormnow/features/posts/screens/post_miniature.dart';
-import 'package:dormnow/models/post_model.dart';
+// import 'package:dormnow/features/posts/screens/post_miniature.dart';
+// import 'package:dormnow/models/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,7 +41,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xffFFCE0C),
+        backgroundColor: const Color(0xffFFCE0C),
         onPressed: () => navigateToCreatePost(context),
         heroTag: null,
         child: const Icon(
@@ -49,10 +49,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ),
       body: NestedScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         headerSliverBuilder: (_, __) => [
           SliverAppBar(
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20),
@@ -85,7 +85,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(left: 20),
+                    padding: const EdgeInsets.only(left: 20),
                     width: 190.w,
                     height: 12.h,
                     alignment: Alignment.bottomLeft,
@@ -99,13 +99,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   Container(
                     width: 40.w,
                     height: 20.h,
-                    child: SvgPicture.asset('assets/images/lupa.svg'),
                     alignment: Alignment.bottomLeft,
+                    child: SvgPicture.asset('assets/images/lupa.svg'),
                   ),
                 ],
               ),
               //centerTitle: true,
-              titlePadding: EdgeInsets.only(bottom: 20),
+              titlePadding: const EdgeInsets.only(bottom: 20),
             ),
             //bottom:
           ),

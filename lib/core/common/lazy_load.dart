@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dormnow/core/common/loader.dart';
-import 'package:dormnow/features/posts/controller/post_controller.dart';
+// import 'package:dormnow/features/posts/controller/post_controller.dart';
 import 'package:dormnow/features/posts/screens/post_miniature.dart';
 import 'package:dormnow/models/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LazyLoadWidget extends ConsumerStatefulWidget {
-  final Future<(List<Post>, List<QueryDocumentSnapshot<Object?>>?)> Function(QueryDocumentSnapshot<Object?>?) loadFrom;
+  final Future<(List<Post>, List<QueryDocumentSnapshot<Object?>>?)> Function(
+      QueryDocumentSnapshot<Object?>?) loadFrom;
   const LazyLoadWidget({super.key, required this.loadFrom});
 
   @override
@@ -61,7 +62,8 @@ class _LazyLoadWidgetState extends ConsumerState<LazyLoadWidget> {
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
         if (notification is ScrollEndNotification) {
-          if (notification.metrics.pixels == notification.metrics.maxScrollExtent) {
+          if (notification.metrics.pixels ==
+              notification.metrics.maxScrollExtent) {
             loadPosts();
           }
         }

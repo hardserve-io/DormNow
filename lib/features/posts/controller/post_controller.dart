@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dormnow/core/failure.dart';
+// import 'package:dormnow/core/failure.dart';
 import 'package:dormnow/core/providers/storage_repository_provider.dart';
 import 'package:dormnow/core/utils.dart';
 import 'package:dormnow/features/auth/controller/auth_controller.dart';
 import 'package:dormnow/features/posts/repository/post_repository.dart';
 import 'package:dormnow/models/post_model.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
@@ -23,7 +23,8 @@ final postContollerProvider = StateNotifierProvider<PostContoller, bool>((ref) {
   );
 });
 
-final getPostByIdProvider = StreamProvider.autoDispose.family((ref, String postId) {
+final getPostByIdProvider =
+    StreamProvider.autoDispose.family((ref, String postId) {
   final postConctoller = ref.watch(postContollerProvider.notifier);
   return postConctoller.getPostById(postId);
 });
@@ -59,7 +60,7 @@ class PostContoller extends StateNotifier<bool> {
   }) async {
     state = true;
     List<String> filesId = [];
-    String postId = Uuid().v1();
+    String postId = const Uuid().v1();
     final user = _ref.read(userProvider)!;
     List<String> pictures = [];
     int fails = 0;
@@ -68,15 +69,15 @@ class PostContoller extends StateNotifier<bool> {
 
     for (final file in files) {
       filesForFirebase.add(File(file));
-      filesId.add(Uuid().v1());
+      filesId.add(const Uuid().v1());
       // imageResult.fold((l) {
       //   fails++;
       //   failMessages += l.message;
       // }, (r) => pictures.add(r));
     }
 
-    final imageResult =
-        await _storageRepository.uploadFiles(path: 'posts/$postId', id: filesId, images: filesForFirebase);
+    final imageResult = await _storageRepository.uploadFiles(
+        path: 'posts/$postId', id: filesId, images: filesForFirebase);
 
     for (final res in imageResult) {
       res.fold((l) {
@@ -87,6 +88,7 @@ class PostContoller extends StateNotifier<bool> {
 
     if (fails == 0) {
       final Post post = Post(
+        address: address,
         id: postId,
         title: title,
         description: description,
@@ -104,13 +106,14 @@ class PostContoller extends StateNotifier<bool> {
       res.fold(
         (l) => showSnackBar(context, l.message),
         (r) {
-          showSnackBar(context, 'Posted successfully');
+          showSnackBar(context, 'Успішно опубліковано!');
           Routemaster.of(context).pop();
         },
       );
     } else {
       if (context.mounted) {
-        showSnackBar(context, "There were $fails errors. Details: $failMessages");
+        showSnackBar(
+            context, "There were $fails errors. Details: $failMessages");
       } else {
         print('Error: context not mounted @create_post() @PostController');
       }
@@ -151,7 +154,7 @@ class PostContoller extends StateNotifier<bool> {
     for (final url in files) {
       if (!url.startsWith('http')) {
         filesForFirebase.add(File(url));
-        filesId.add(Uuid().v1());
+        filesId.add(const Uuid().v1());
       }
     }
     // for (final file in files) {
@@ -163,8 +166,8 @@ class PostContoller extends StateNotifier<bool> {
     //   // }, (r) => pictures.add(r));
     // }
 
-    final imageResult =
-        await _storageRepository.uploadFiles(path: 'posts/${oldPost.id}', id: filesId, images: filesForFirebase);
+    final imageResult = await _storageRepository.uploadFiles(
+        path: 'posts/${oldPost.id}', id: filesId, images: filesForFirebase);
 
     for (final res in imageResult) {
       res.fold((l) {
@@ -193,24 +196,32 @@ class PostContoller extends StateNotifier<bool> {
       res.fold(
         (l) => showSnackBar(context, l.message),
         (r) {
-          showSnackBar(context, 'Updated successfully');
+          showSnackBar(context, 'Успішно відредаговано!');
           Routemaster.of(context).history.back();
         },
       );
     } else {
       if (context.mounted) {
-        showSnackBar(context, "There were $fails errors. Details: $failMessages");
+        showSnackBar(
+            context, "There were $fails errors. Details: $failMessages");
       } else {
         print('Error: context not mounted @create_post() @PostController');
       }
     }
   }
 
-  Future<(List<Post>, List<QueryDocumentSnapshot<Object?>>?)> getPosts(DocumentSnapshot? startAfter) async {
+  Future<(List<Post>, List<QueryDocumentSnapshot<Object?>>?)> getPosts(
+      DocumentSnapshot? startAfter) async {
     const docLimit = 5;
-    final snap = await _postRepository.getPosts(limit: docLimit, startAfter: startAfter);
+    final snap =
+        await _postRepository.getPosts(limit: docLimit, startAfter: startAfter);
     final lastEL = snap.docs;
-    return (snap.docs.map((e) => Post.fromMap(e.data() as Map<String, dynamic>)).toList(), lastEL);
+    return (
+      snap.docs
+          .map((e) => Post.fromMap(e.data() as Map<String, dynamic>))
+          .toList(),
+      lastEL
+    );
   }
 
   Stream<Post> getPostById(String postId) {

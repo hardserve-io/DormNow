@@ -1,7 +1,7 @@
-import 'package:dormnow/features/posts/screens/post_miniature.dart';
+// import 'package:dormnow/features/posts/screens/post_miniature.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:flutter/services.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -22,13 +22,13 @@ class _SearchScreenState extends State<SearchScreen> {
           //padding: EdgeInsets.symmetric(horizontal: 15),
           width: 300.w,
           height: 40.h,
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             left: 10,
             right: 10,
             top: 3,
             bottom: 5,
           ),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Color(0xff16382B),
             borderRadius: BorderRadius.all(
               Radius.circular(20),
@@ -47,20 +47,20 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.only(right: 10),
                   height: 40.h,
                   width: 250.w,
                   child: TextField(
                     controller: _textController,
                     decoration: InputDecoration(
-                      focusedBorder: UnderlineInputBorder(
+                      focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Color(0xffFFCE0C)),
                       ),
-                      suffixIconColor: Color(0xffFFCE0C),
+                      suffixIconColor: const Color(0xffFFCE0C),
                       suffixIcon: IconButton(
                         padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(),
-                        icon: Icon(Icons.clear),
+                        constraints: const BoxConstraints(),
+                        icon: const Icon(Icons.clear),
                         onPressed: () {
                           _textController.clear();
                         },
@@ -83,18 +83,18 @@ class _SearchScreenState extends State<SearchScreen> {
       body: ListView.builder(
         itemCount: 10,
         itemBuilder: (context, index) => Container(
+          color: Colors.amber,
+          width: 362.w,
+          height: 200.h,
+          margin: const EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 25),
           child: Text(
             searchQuery,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 20,
               color: Colors.blueAccent,
             ),
           ),
-          color: Colors.amber,
-          width: 362.w,
-          height: 200.h,
-          margin: EdgeInsets.symmetric(vertical: 20),
-          padding: EdgeInsets.symmetric(horizontal: 25),
         ),
       ),
     );
