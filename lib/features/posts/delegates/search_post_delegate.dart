@@ -11,6 +11,7 @@ class SearchPostDelegate extends SearchDelegate {
   final WidgetRef ref;
   SearchPostDelegate(this.ref);
   @override
+  String get searchFieldLabel => 'Пошук';
   List<Widget>? buildActions(BuildContext context) {
     return [
       IconButton(
