@@ -291,8 +291,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                   ),
                                   AutoScaleTabBarView(
                                     children: [
-                                      Container(
-                                          child: ListView.builder(
+                                      ListView.builder(
                                         physics: const BouncingScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount: listDocument.length + 1,
@@ -317,35 +316,32 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                             );
                                           }
                                         },
-                                      )),
-                                      Container(
-                                        child: ListView.builder(
-                                          physics:
-                                              const BouncingScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemCount: listDocument.length + 1,
-                                          itemBuilder: (context, index) {
-                                            if (index < listDocument.length) {
-                                              final Post post =
-                                                  listDocument[index];
-                                              final key = UniqueKey();
-                                              return OrderMiniature(
-                                                order: post,
-                                                key: key,
-                                                refreshParent: refresh,
-                                              );
-                                            } else {
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 32),
-                                                child: moreToLoad
-                                                    ? const Loader()
-                                                    : Container(),
-                                              );
-                                            }
-                                          },
-                                        ),
+                                      ),
+                                      ListView.builder(
+                                        physics: const BouncingScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount: listDocument.length + 1,
+                                        itemBuilder: (context, index) {
+                                          if (index < listDocument.length) {
+                                            final Post post =
+                                                listDocument[index];
+                                            final key = UniqueKey();
+                                            return OrderMiniature(
+                                              order: post,
+                                              key: key,
+                                              refreshParent: refresh,
+                                            );
+                                          } else {
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 32),
+                                              child: moreToLoad
+                                                  ? const Loader()
+                                                  : Container(),
+                                            );
+                                          }
+                                        },
                                       ),
                                     ],
                                   )
