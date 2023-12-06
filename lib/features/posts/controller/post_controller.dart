@@ -6,6 +6,7 @@ import 'package:dormnow/core/providers/storage_repository_provider.dart';
 import 'package:dormnow/core/utils.dart';
 import 'package:dormnow/features/auth/controller/auth_controller.dart';
 import 'package:dormnow/features/posts/repository/post_repository.dart';
+import 'package:dormnow/features/user_profile/controller/user_profile_controller.dart';
 import 'package:dormnow/models/post_model.dart';
 // import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -24,8 +25,7 @@ final postContollerProvider = StateNotifierProvider<PostContoller, bool>((ref) {
   );
 });
 
-final getPostByIdProvider =
-    StreamProvider.autoDispose.family((ref, String postId) {
+final getPostByIdProvider = StreamProvider.autoDispose.family((ref, String postId) {
   final postConctoller = ref.watch(postContollerProvider.notifier);
   return postConctoller.getPostById(postId);
 });
@@ -77,8 +77,8 @@ class PostContoller extends StateNotifier<bool> {
       // }, (r) => pictures.add(r));
     }
 
-    final imageResult = await _storageRepository.uploadFiles(
-        path: 'posts/$postId', id: filesId, images: filesForFirebase);
+    final imageResult =
+        await _storageRepository.uploadFiles(path: 'posts/$postId', id: filesId, images: filesForFirebase);
 
     for (final res in imageResult) {
       res.fold((l) {
@@ -107,14 +107,14 @@ class PostContoller extends StateNotifier<bool> {
       res.fold(
         (l) => showSnackBar(context, l.message),
         (r) {
+          _ref.read(userProfileControllerProvider.notifier).addToCreatedPosts(context, postId);
           showSnackBar(context, 'Успішно опубліковано!');
           Routemaster.of(context).pop();
         },
       );
     } else {
       if (context.mounted) {
-        showSnackBar(
-            context, "There were $fails errors. Details: $failMessages");
+        showSnackBar(context, "There were $fails errors. Details: $failMessages");
       } else {
         print('Error: context not mounted @create_post() @PostController');
       }
@@ -167,8 +167,8 @@ class PostContoller extends StateNotifier<bool> {
     //   // }, (r) => pictures.add(r));
     // }
 
-    final imageResult = await _storageRepository.uploadFiles(
-        path: 'posts/${oldPost.id}', id: filesId, images: filesForFirebase);
+    final imageResult =
+        await _storageRepository.uploadFiles(path: 'posts/${oldPost.id}', id: filesId, images: filesForFirebase);
 
     for (final res in imageResult) {
       res.fold((l) {
@@ -203,26 +203,18 @@ class PostContoller extends StateNotifier<bool> {
       );
     } else {
       if (context.mounted) {
-        showSnackBar(
-            context, "There were $fails errors. Details: $failMessages");
+        showSnackBar(context, "There were $fails errors. Details: $failMessages");
       } else {
         print('Error: context not mounted @create_post() @PostController');
       }
     }
   }
 
-  Future<(List<Post>, List<QueryDocumentSnapshot<Object?>>?)> getPosts(
-      DocumentSnapshot? startAfter) async {
+  Future<(List<Post>, List<QueryDocumentSnapshot<Object?>>?)> getPosts(DocumentSnapshot? startAfter) async {
     const docLimit = 5;
-    final snap =
-        await _postRepository.getPosts(limit: docLimit, startAfter: startAfter);
+    final snap = await _postRepository.getPosts(limit: docLimit, startAfter: startAfter);
     final lastEL = snap.docs;
-    return (
-      snap.docs
-          .map((e) => Post.fromMap(e.data() as Map<String, dynamic>))
-          .toList(),
-      lastEL
-    );
+    return (snap.docs.map((e) => Post.fromMap(e.data() as Map<String, dynamic>)).toList(), lastEL);
   }
 
   Stream<Post> getPostById(String postId) {
@@ -233,6 +225,7 @@ class PostContoller extends StateNotifier<bool> {
     Routemaster.of(context).pop();
     final res = await _postRepository.deletePost(postId);
     res.fold((l) => null, (r) {
+      _ref.read(userProfileControllerProvider.notifier).removeFromCreatedPosts(context, postId);
       _ref.read(refreshNotifier.notifier).update((state) => true);
     });
   }

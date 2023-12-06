@@ -4,6 +4,7 @@ import 'package:dormnow/core/failure.dart';
 import 'package:dormnow/core/providers/firebase_providers.dart';
 import 'package:dormnow/core/type_defs.dart';
 import 'package:dormnow/models/post_model.dart';
+import 'package:dormnow/models/user_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 

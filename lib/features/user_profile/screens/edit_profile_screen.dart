@@ -12,8 +12,7 @@ class EditProfileScreen extends ConsumerStatefulWidget {
   const EditProfileScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _EditProfileScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _EditProfileScreenState();
 }
 
 class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
@@ -92,8 +91,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                       radius: 50,
                                     )
                                   : CircleAvatar(
-                                      backgroundImage:
-                                          NetworkImage(user.profilePicture),
+                                      backgroundImage: NetworkImage(user.profilePicture),
                                       radius: 50,
                                     ),
                               Container(
@@ -101,8 +99,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                   border: Border.all(
                                     color: const Color(0xffFFCE0C),
                                   ),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(20)),
+                                  borderRadius: const BorderRadius.all(Radius.circular(20)),
                                 ),
                                 padding: const EdgeInsets.only(
                                   top: 15,
@@ -128,8 +125,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                         padding: const EdgeInsets.only(left: 25, right: 25),
                         child: Column(children: <Widget>[
                           TextFormField(
-                            decoration: const InputDecoration(
-                                labelText: "Ім'я користувача"),
+                            decoration: const InputDecoration(labelText: "Ім'я користувача"),
                             controller: nameEditController,
                             validator: (value) {
                               if (value == '') {
@@ -140,8 +136,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                           ),
                           const SizedBox(height: 10),
                           TextFormField(
-                              decoration:
-                                  const InputDecoration(labelText: "Адреса"),
+                              decoration: const InputDecoration(labelText: "Адреса"),
                               controller: addressEditController,
                               validator: (value) {
                                 if (value == '') {
@@ -151,8 +146,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                               }),
                           const SizedBox(height: 10),
                           TextFormField(
-                              decoration:
-                                  const InputDecoration(labelText: "Контакти"),
+                              decoration: const InputDecoration(labelText: "Контакти"),
                               controller: contactEditController,
                               validator: (value) {
                                 if (value == '') {
@@ -175,8 +169,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                             width: 1,
                             color: const Color(0xffFFCE0C),
                           ),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(20)),
+                          borderRadius: const BorderRadius.all(Radius.circular(20)),
                         ),
                         child: TextButton(
                           onPressed: () {
