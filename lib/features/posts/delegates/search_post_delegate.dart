@@ -11,6 +11,7 @@ class SearchPostDelegate extends SearchDelegate {
   final WidgetRef ref;
   SearchPostDelegate(this.ref);
   @override
+  String get searchFieldLabel => 'Пошук';
   List<Widget>? buildActions(BuildContext context) {
     return [
       IconButton(
@@ -32,17 +33,23 @@ class SearchPostDelegate extends SearchDelegate {
       future: ref.read(postContollerProvider.notifier).searchPosts(query),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (BuildContext context, int index) {
-              final key = UniqueKey();
-              final post = snapshot.data![index];
-              return OrderMiniature(
-                order: post,
-                key: key,
-                refreshParent: () {},
-              );
-            },
+          return Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (BuildContext context, int index) {
+                final key = UniqueKey();
+                final post = snapshot.data![index];
+                return Padding(
+                  padding: EdgeInsets.only(right: 25, left: 25),
+                  child: OrderMiniature(
+                    order: post,
+                    key: key,
+                    refreshParent: () {},
+                  ),
+                );
+              },
+            ),
           );
         } else {
           return const Loader();

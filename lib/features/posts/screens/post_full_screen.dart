@@ -38,7 +38,10 @@ class _OrderPageState extends ConsumerState<OrderPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            backgroundColor: Colors.black,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            backgroundColor: Color(0xff16382B),
             title: const Text(
               'Увага',
               style: TextStyle(color: Color(0xFFFFCE0C)),
@@ -48,29 +51,40 @@ class _OrderPageState extends ConsumerState<OrderPage> {
               style: TextStyle(color: Colors.white),
             ),
             actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context, true);
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF16382B)),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Color(0xffFFCE0C)),
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
                 ),
-                child: const Text('Так', style: TextStyle(color: Colors.white)),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, true);
+                  },
+                  child:
+                      const Text('Так', style: TextStyle(color: Colors.white)),
+                ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context, false);
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF16382B)),
+              Container(
+                margin: EdgeInsets.only(left: 15),
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Color(0xffFFCE0C)),
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
                 ),
-                child: const Text('Ні', style: TextStyle(color: Colors.white)),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, false);
+                  },
+                  child:
+                      const Text('Ні', style: TextStyle(color: Colors.white)),
+                ),
               ),
             ],
           );
         });
     if (delete == true) {
-      ref.read(postContollerProvider.notifier).deletePost(widget.postId, context);
+      ref
+          .read(postContollerProvider.notifier)
+          .deletePost(widget.postId, context);
     }
   }
 
@@ -85,17 +99,16 @@ class _OrderPageState extends ConsumerState<OrderPage> {
           ),
           title: const Text(
             'Контакти:',
-            textAlign: TextAlign.center,
+            //textAlign: TextAlign.center,
             style: TextStyle(color: Color(0xffFFCE0C)),
           ),
           backgroundColor: const Color(0xff16382B),
-          //iconColor: Color(0xffFFCE0C),
           content: Text(
             "${text}",
             style: const TextStyle(
               fontSize: 16,
             ),
-            textAlign: TextAlign.center,
+            //textAlign: TextAlign.center,
           ),
           actions: <Widget>[
             Container(
