@@ -21,7 +21,7 @@ class UserProfileScreen extends ConsumerStatefulWidget {
   ConsumerState<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
-class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
+class _UserProfileScreenState extends ConsumerState<UserProfileScreen> with TickerProviderStateMixin {
   late String uid;
   void navigateToEditUser(BuildContext context) {
     Routemaster.of(context).push('/edit-profile');
@@ -32,13 +32,18 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   }
 
   bool moreToLoad = true;
+  bool moreToLoadMy = true;
   bool isLoadingList = false;
   List<Post> listDocument = [];
+  List<Post> listMyPosts = [];
   QueryDocumentSnapshot<Object?>? lastEl;
+  late TabController _tabController;
 
   final int step = 5;
   late int startPost;
   late int endPost;
+  late int startPostMy;
+  late int endPostMy;
 
   void loadPosts([bool refresh = false]) async {
     if (moreToLoad) {
@@ -50,9 +55,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
         });
       }
 
-      final newDocs = await ref
-          .read(userProfileControllerProvider.notifier)
-          .getPosts(startPost, endPost);
+      final newDocs = await ref.read(userProfileControllerProvider.notifier).getFavPosts(startPost, endPost);
 
       startPost = endPost;
       endPost += step;
@@ -70,21 +73,62 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
     }
   }
 
+  void loadMyPosts([bool refresh = false]) async {
+    if (moreToLoadMy) {
+      print('Loading posts...');
+
+      if (!refresh) {
+        setState(() {
+          isLoadingList = true;
+        });
+      }
+
+      final newDocs = await ref.read(userProfileControllerProvider.notifier).getMyPosts(startPostMy, endPostMy);
+
+      startPostMy = endPostMy;
+      endPostMy += step;
+
+      if (newDocs.isNotEmpty) {
+        listMyPosts.addAll(newDocs);
+        moreToLoadMy = true;
+      } else {
+        moreToLoadMy = false;
+      }
+
+      setState(() {
+        isLoadingList = false;
+      });
+    }
+  }
+
   Future<void> refresh() {
-    listDocument = [];
-    startPost = 0;
-    endPost = step;
-    lastEl = null;
-    moreToLoad = true;
-    loadPosts(true);
+    if (_tabController.index == 0) {
+      listDocument = [];
+      startPost = 0;
+      endPost = step;
+      lastEl = null;
+      moreToLoad = true;
+      loadPosts(true);
+    } else {
+      listMyPosts = [];
+      startPostMy = 0;
+      endPostMy = step;
+      lastEl = null;
+      moreToLoadMy = true;
+      loadMyPosts();
+    }
     return Future(() => null);
   }
 
   @override
   void initState() {
+    _tabController = TabController(vsync: this, length: 2);
     startPost = 0;
     endPost = step;
+    startPostMy = 0;
+    endPostMy = step;
     loadPosts();
+    loadMyPosts();
     super.initState();
   }
 
@@ -142,9 +186,12 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
               body: NotificationListener<ScrollNotification>(
                 onNotification: (notification) {
                   if (notification is ScrollEndNotification) {
-                    if (notification.metrics.pixels ==
-                        notification.metrics.maxScrollExtent) {
-                      loadPosts();
+                    if (notification.metrics.pixels == notification.metrics.maxScrollExtent) {
+                      if (_tabController.index == 0) {
+                        loadPosts();
+                      } else {
+                        loadMyPosts();
+                      }
                     }
                   }
                   return true;
@@ -155,6 +202,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 25, right: 25),
                     child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
                       child: Column(
                         children: [
                           Row(
@@ -163,8 +211,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                               Container(
                                 height: 80.h,
                                 width: 80.w,
-                                margin:
-                                    const EdgeInsets.only(top: 20, right: 10),
+                                margin: const EdgeInsets.only(top: 20, right: 10),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(80),
                                   child: Image.network(
@@ -178,8 +225,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                 height: 150.h,
                                 width: 245.w,
                                 child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                       alignment: Alignment.bottomLeft,
@@ -221,24 +267,19 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                     Container(
                                       //margin: EdgeInsets.only(top: 40),
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
-                                            margin:
-                                                const EdgeInsets.only(right: 5),
+                                            margin: const EdgeInsets.only(right: 5),
                                             decoration: BoxDecoration(
                                               border: Border.all(
                                                 width: 1,
                                                 color: const Color(0xffFFCE0C),
                                               ),
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(20)),
+                                              borderRadius: const BorderRadius.all(Radius.circular(20)),
                                             ),
                                             child: TextButton(
-                                              onPressed: () =>
-                                                  navigateToEditUser(context),
+                                              onPressed: () => navigateToEditUser(context),
                                               child: const Text(
                                                 'Редагувати профіль',
                                                 style: TextStyle(
@@ -254,9 +295,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                                 width: 1,
                                                 color: const Color(0xffFFCE0C),
                                               ),
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(20)),
+                                              borderRadius: const BorderRadius.all(Radius.circular(20)),
                                             ),
                                             child: TextButton(
                                               onPressed: () => logout(ref),
@@ -278,27 +317,57 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                           ),
                           Container(
                             margin: const EdgeInsets.only(top: 30),
-                            child: DefaultTabController(
-                              length: 2,
-                              child: Column(
-                                children: [
-                                  const TabBar(
-                                    indicatorColor: Color(0xffFFCE0C),
-                                    tabs: [
-                                      Tab(text: "Власні"),
-                                      Tab(text: "Уподобані"),
-                                    ],
-                                  ),
-                                  AutoScaleTabBarView(
-                                    children: [
-                                      ListView.builder(
+                            child: Column(
+                              children: [
+                                TabBar(
+                                  controller: _tabController,
+                                  indicatorColor: Color(0xffFFCE0C),
+                                  tabs: [
+                                    Tab(text: "Уподобані"),
+                                    Tab(text: "Власні"),
+                                  ],
+                                ),
+                                AutoScaleTabBarView(
+                                  physics: BouncingScrollPhysics(),
+                                  controller: _tabController,
+                                  children: [
+                                    Container(
+                                        child: ListView.builder(
+                                      physics: const BouncingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: listDocument.length + 1,
+                                      itemBuilder: (context, index) {
+                                        if (index < listDocument.length) {
+                                          final Post post = listDocument[index];
+                                          final key = UniqueKey();
+                                          return OrderMiniature(
+                                            order: post,
+                                            key: key,
+                                            refreshParent: refresh,
+                                          );
+                                        } else {
+                                          return Padding(
+                                              padding: const EdgeInsets.symmetric(vertical: 32),
+                                              child: moreToLoad
+                                                  ? const Loader()
+                                                  : listDocument.isEmpty
+                                                      ? Container(
+                                                          child: Center(
+                                                            child: Text('No liked yet'),
+                                                          ),
+                                                        )
+                                                      : Container());
+                                        }
+                                      },
+                                    )),
+                                    Container(
+                                      child: ListView.builder(
                                         physics: const BouncingScrollPhysics(),
                                         shrinkWrap: true,
-                                        itemCount: listDocument.length + 1,
+                                        itemCount: listMyPosts.length + 1,
                                         itemBuilder: (context, index) {
-                                          if (index < listDocument.length) {
-                                            final Post post =
-                                                listDocument[index];
+                                          if (index < listMyPosts.length) {
+                                            final Post post = listMyPosts[index];
                                             final key = UniqueKey();
                                             return OrderMiniature(
                                               order: post,
@@ -307,46 +376,24 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                             );
                                           } else {
                                             return Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 32),
-                                              child: moreToLoad
+                                              padding: const EdgeInsets.symmetric(vertical: 32),
+                                              child: moreToLoadMy
                                                   ? const Loader()
-                                                  : Container(),
+                                                  : listMyPosts.isEmpty
+                                                      ? Container(
+                                                          child: Center(
+                                                            child: Text('No posts yet'),
+                                                          ),
+                                                        )
+                                                      : Container(),
                                             );
                                           }
                                         },
                                       ),
-                                      ListView.builder(
-                                        physics: const BouncingScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemCount: listDocument.length + 1,
-                                        itemBuilder: (context, index) {
-                                          if (index < listDocument.length) {
-                                            final Post post =
-                                                listDocument[index];
-                                            final key = UniqueKey();
-                                            return OrderMiniature(
-                                              order: post,
-                                              key: key,
-                                              refreshParent: refresh,
-                                            );
-                                          } else {
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 32),
-                                              child: moreToLoad
-                                                  ? const Loader()
-                                                  : Container(),
-                                            );
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
+                                    ),
+                                  ],
+                                )
+                              ],
                             ),
                           ),
                         ],

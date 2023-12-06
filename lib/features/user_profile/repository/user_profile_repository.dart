@@ -17,13 +17,10 @@ final userProfileRepositoryProvider = Provider((ref) {
 
 class UserProfileRepository {
   final FirebaseFirestore _firestore;
-  UserProfileRepository({required FirebaseFirestore firestore})
-      : _firestore = firestore;
+  UserProfileRepository({required FirebaseFirestore firestore}) : _firestore = firestore;
 
-  CollectionReference get _users =>
-      _firestore.collection(FirebaseConstants.usersCollection);
-  CollectionReference get _posts =>
-      _firestore.collection(FirebaseConstants.postsCollection);
+  CollectionReference get _users => _firestore.collection(FirebaseConstants.usersCollection);
+  CollectionReference get _posts => _firestore.collection(FirebaseConstants.postsCollection);
 
   FutureVoid editProfile(UserModel user) async {
     try {
@@ -53,6 +50,30 @@ class UserProfileRepository {
     }
   }
 
+  FutureVoid addToCreatedPosts(String postId, UserModel user) async {
+    try {
+      return right(_users.doc(user.uid).update({
+        'marketAdverts': FieldValue.arrayUnion([postId])
+      }));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  FutureVoid removeFromCreatedPosts(String postId, UserModel user) async {
+    try {
+      return right(_users.doc(user.uid).update({
+        'marketAdverts': FieldValue.arrayRemove([postId])
+      }));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
   // Future<List<Post>> getPosts({required List<String> postIds}) async {
   //   print(1);
   //   final fetchedPosts =
@@ -62,30 +83,37 @@ class UserProfileRepository {
   //   return res.docs.map((e) => Post.fromMap(e.data() as Map<String, dynamic>)).toList();
   // }
 
-  FutureEither<Post> getFavPost({required String postIds}) async {
+  FutureEither<Post> getFavMyPostSingle({required String postIds}) async {
     final fetchedPosts = _posts.where("id", isEqualTo: postIds);
 
     final res = await fetchedPosts.get();
 
-    final resDone = res.docs
-        .map((e) => Post.fromMap(e.data() as Map<String, dynamic>))
-        .toList();
+    final resDone = res.docs.map((e) => Post.fromMap(e.data() as Map<String, dynamic>)).toList();
     if (resDone.isEmpty) {
       return left(Failure(postIds));
     }
     return right(resDone.first);
   }
 
-  Future<List<Either<Failure, Post>>> getFavPosts({
+  Future<List<Either<Failure, Post>>> getFavMyPosts({
     required List<String> postIds,
   }) async {
-    var posts = await Future.wait(postIds
-        .asMap()
-        .entries
-        .map((postId) => getFavPost(postIds: postId.value)));
-    print(posts.length);
+    var posts = await Future.wait(postIds.asMap().entries.map((postId) => getFavMyPostSingle(postIds: postId.value)));
+
     return posts;
   }
+
+  // Future<QuerySnapshot<Object?>> getMyPosts(
+  //     {required String uid, required int limit, DocumentSnapshot? startAfter}) async {
+  //   print('my posts');
+  //   final Query<Object?> fetchedPosts =
+  //       _posts.where('authorUid', isEqualTo: uid).orderBy('createdAt', descending: true).limit(limit);
+  //   if (startAfter != null) {
+  //     return fetchedPosts.startAfterDocument(startAfter).get();
+  //   } else {
+  //     return fetchedPosts.get();
+  //   }
+  // }
 
   // Future<List<QueryDocumentSnapshot>> listItems(List<dynamic> itemIds) async {
   //   final chunks = partition(itemIds, 10);
