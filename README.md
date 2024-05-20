@@ -1,6 +1,3 @@
 # DormNow
 
-## NOTE: 
-**MAIN BRANCH MUST NOT BE COMMITED TO (UNLESS STABLE)  
-MAIN BRANCH IS FOR DEMO / STABLE VERSIONS ONLY  
-MAIN BRANCH IS RULE PROTECTED**  
+A marketplace application designed for university dormitories that enables students to offer or purchase items within their dormitory or another one
